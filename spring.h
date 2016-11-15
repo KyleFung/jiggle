@@ -12,6 +12,7 @@ class Spring {
   public:
     Spring() {}
     Spring(PointMass* p, PointMass* q, float length, float k);
+    Spring(PointMass* p, PointMass* q, float k);
     void draw();
     void contributeImpulse(float h);
 };

@@ -13,6 +13,13 @@ Spring::Spring(PointMass* p, PointMass* q, float length, float k) {
     mK = k;
 }
 
+Spring::Spring(PointMass* p, PointMass* q, float k) {
+    mP = p;
+    mQ = q;
+    mL = std::sqrt((p->mPos - q->mPos).dot(p->mPos - q->mPos));
+    mK = k;
+}
+
 void Spring::draw() {
     glBegin(GL_LINES);
     glColor4f(1.0, 1.0, 1.0, 1.0);

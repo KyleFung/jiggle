@@ -5,9 +5,13 @@
 #include <Eigen/Geometry>
 #include <GLUT/glut.h>
 
-Simulation::Simulation() : width(500), height(500), c(500, 500, 20),
+Simulation::Simulation() : t(p, p + 1, p + 2), width(500), height(500), c(500, 500, 20),
                            closest(NULL), chosenDist(0), mode(0),
-                           gravity(false), gForce(10) {}
+                           gravity(false), gForce(10) {
+    p[0].mPos << 0, 0, 0;
+    p[1].mPos << 0, 5, 0;
+    p[2].mPos << 0, 0, 5;
+}
 
 void Simulation::start() {
     // Set up projection matrix for first time
@@ -25,12 +29,13 @@ void Simulation::simulate() {
     float h = 0.03;
     // Step forward
     if(gravity) {
-        b.applyGravity(gForce, h);
+        //b.applyGravity(gForce, h);
     }
-    b.simulate(h);
+    //b.simulate(h);
+    t.simulate(h);
 
     // Do collision detection with floor
-    b.collideFloor(-10);
+    //b.collideFloor(-10);
 }
 
 void Simulation::displayFunc() {
@@ -50,7 +55,8 @@ void Simulation::displayFunc() {
     simulate();
 
     // Draw scene (just box and floor right now)
-    b.draw();
+    //b.draw();
+    t.draw();
 
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0);

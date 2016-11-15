@@ -2,6 +2,7 @@
 #define SIMULATION_H
 
 #include "box.h"
+#include "triangle.h"
 #include "camera.h"
 
 class Simulation {
@@ -11,6 +12,8 @@ class Simulation {
 
     // Simulation state
     Box b;
+    Triangle t;
+    PointMass p[3];
     Camera c;
     PointMass* closest;
     bool chosen;
