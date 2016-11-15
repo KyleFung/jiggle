@@ -1,4 +1,5 @@
 #include "triangle.h"
+
 Triangle::Triangle(PointMass* x0, PointMass* x1, PointMass* x2) {
     mV[0] = x0;
     mV[1] = x1;
@@ -19,4 +20,8 @@ void Triangle::simulate(float h) {
     for(int i = 0; i < 3; i++) {
         mV[i]->simulate(h);
     }
+}
+
+bool Triangle::collide(PointMass p) {
+    return false;
 }

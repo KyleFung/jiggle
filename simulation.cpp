@@ -5,12 +5,19 @@
 #include <Eigen/Geometry>
 #include <GLUT/glut.h>
 
-Simulation::Simulation() : t(p, p + 1, p + 2), width(500), height(500), c(500, 500, 20),
+Simulation::Simulation() : t(v, v + 1, v + 2), width(500), height(500), c(500, 500, 20),
                            closest(NULL), chosenDist(0), mode(0),
                            gravity(false), gForce(10) {
-    p[0].mPos << 0, 0, 0;
-    p[1].mPos << 0, 5, 0;
-    p[2].mPos << 0, 0, 5;
+    // Set up the scene as a particle about to penetrate a triangle
+    p.mPos << 3, 1.5, 1.5;
+    v[0].mPos << 0, 0, 0;
+    v[1].mPos << 0, 5, 0;
+    v[2].mPos << 0, 0, 5;
+
+    p.mVel << -1, 0, 0;
+    v[0].mVel << 0, 0, 0;
+    v[1].mVel << 0, 0, 0;
+    v[2].mVel << 0, 0, 0;
 }
 
 void Simulation::start() {
@@ -32,10 +39,19 @@ void Simulation::simulate() {
         //b.applyGravity(gForce, h);
     }
     //b.simulate(h);
+    p.simulate(h);
     t.simulate(h);
 
     // Do collision detection with floor
     //b.collideFloor(-10);
+
+    // Do collision testing between actors, and freeze all penetrating actors
+    if (t.collide(p)) {
+        p.mVel << 0, 0, 0;
+        v[0].mVel << 0, 0, 0;
+        v[1].mVel << 0, 0, 0;
+        v[2].mVel << 0, 0, 0;
+    }
 }
 
 void Simulation::displayFunc() {
@@ -57,6 +73,7 @@ void Simulation::displayFunc() {
     // Draw scene (just box and floor right now)
     //b.draw();
     t.draw();
+    p.draw();
 
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0);

@@ -11,6 +11,7 @@ class Triangle {
     Triangle(PointMass* x0, PointMass* x1, PointMass* x2);
     void draw();
     void simulate(float h);
+    bool collide(PointMass p);
 };
 
 #endif

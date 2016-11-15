@@ -13,7 +13,8 @@ class Simulation {
     // Simulation state
     Box b;
     Triangle t;
-    PointMass p[3];
+    PointMass p;
+    PointMass v[3];
     Camera c;
     PointMass* closest;
     bool chosen;
