@@ -6,47 +6,111 @@
 Box::Box() {
     mK = 300;
 
-    mP[0] = PointMass(-1, +1, +1);
-    mP[1] = PointMass(-1, +1, -1);
-    mP[2] = PointMass(+1, +1, -1);
-    mP[3] = PointMass(+1, +1, +1);
-    mP[4] = PointMass(-1, -1, +1);
-    mP[5] = PointMass(-1, -1, -1);
-    mP[6] = PointMass(+1, -1, -1);
-    mP[7] = PointMass(+1, -1, +1);
+    // Add the vertices that make up a box
+    // Add corners
+    addPoint(PointMass(-1, +1, +1));
+    addPoint(PointMass(-1, +1, -1));
+    addPoint(PointMass(+1, +1, -1));
+    addPoint(PointMass(+1, +1, +1));
+    addPoint(PointMass(-1, -1, +1));
+    addPoint(PointMass(-1, -1, -1));
+    addPoint(PointMass(+1, -1, -1));
+    addPoint(PointMass(+1, -1, +1));
+    // Add face centers
+    addPoint(PointMass(1, 0, 0));
+    addPoint(PointMass(0, 1, 0));
+    addPoint(PointMass(0, 0, 1));
+    addPoint(PointMass(-1, 0, 0));
+    addPoint(PointMass(0, -1, 0));
+    addPoint(PointMass(0, 0, -1));
+    // Add center of gravity
+    addPoint(PointMass(0, 0, 0));
 
-    mS[0] = Spring(&mP[0], &mP[1], 2, mK);
-    mS[1] = Spring(&mP[1], &mP[2], 2, mK);
-    mS[2] = Spring(&mP[2], &mP[3], 2, mK);
-    mS[3] = Spring(&mP[3], &mP[0], 2, mK);
-    mS[4] = Spring(&mP[0], &mP[4], 2, mK);
-    mS[5] = Spring(&mP[1], &mP[5], 2, mK);
-    mS[6] = Spring(&mP[2], &mP[6], 2, mK);
-    mS[7] = Spring(&mP[3], &mP[7], 2, mK);
-    mS[8] = Spring(&mP[4], &mP[5], 2, mK);
-    mS[9] = Spring(&mP[5], &mP[6], 2, mK);
-    mS[10] = Spring(&mP[6], &mP[7], 2, mK);
-    mS[11] = Spring(&mP[7], &mP[4], 2, mK);
-
-    // Cross springs
-    mS[12] = Spring(&mP[0], &mP[6], std::sqrt(12), mK);
-    mS[13] = Spring(&mP[1], &mP[7], std::sqrt(12), mK);
-    mS[14] = Spring(&mP[2], &mP[4], std::sqrt(12), mK);
-    mS[15] = Spring(&mP[3], &mP[5], std::sqrt(12), mK);
-
+    // Add the springs that make up the box
+    // Outside edges
+    addSpring(Spring(getPoint(0), getPoint(1), mK));
+    addSpring(Spring(getPoint(1), getPoint(2), mK));
+    addSpring(Spring(getPoint(2), getPoint(3), mK));
+    addSpring(Spring(getPoint(3), getPoint(0), mK));
+    addSpring(Spring(getPoint(0), getPoint(4), mK));
+    addSpring(Spring(getPoint(1), getPoint(5), mK));
+    addSpring(Spring(getPoint(2), getPoint(6), mK));
+    addSpring(Spring(getPoint(3), getPoint(7), mK));
+    addSpring(Spring(getPoint(4), getPoint(5), mK));
+    addSpring(Spring(getPoint(5), getPoint(6), mK));
+    addSpring(Spring(getPoint(6), getPoint(7), mK));
+    addSpring(Spring(getPoint(7), getPoint(4), mK));
     // Face springs
-    mS[16] = Spring(&mP[0], &mP[2], std::sqrt(8), mK);
-    mS[17] = Spring(&mP[1], &mP[3], std::sqrt(8), mK);
-    mS[18] = Spring(&mP[0], &mP[5], std::sqrt(8), mK);
-    mS[19] = Spring(&mP[1], &mP[4], std::sqrt(8), mK);
-    mS[20] = Spring(&mP[4], &mP[6], std::sqrt(8), mK);
-    mS[21] = Spring(&mP[5], &mP[7], std::sqrt(8), mK);
-    mS[22] = Spring(&mP[2], &mP[7], std::sqrt(8), mK);
-    mS[23] = Spring(&mP[3], &mP[6], std::sqrt(8), mK);
-    mS[24] = Spring(&mP[0], &mP[7], std::sqrt(8), mK);
-    mS[25] = Spring(&mP[3], &mP[4], std::sqrt(8), mK);
-    mS[26] = Spring(&mP[1], &mP[6], std::sqrt(8), mK);
-    mS[27] = Spring(&mP[2], &mP[5], std::sqrt(8), mK);
+    // Top
+    addSpring(Spring(getPoint(0), getPoint(9), mK));
+    addSpring(Spring(getPoint(1), getPoint(9), mK));
+    addSpring(Spring(getPoint(2), getPoint(9), mK));
+    addSpring(Spring(getPoint(3), getPoint(9), mK));
+    // Right
+    addSpring(Spring(getPoint(2), getPoint(8), mK));
+    addSpring(Spring(getPoint(3), getPoint(8), mK));
+    addSpring(Spring(getPoint(6), getPoint(8), mK));
+    addSpring(Spring(getPoint(7), getPoint(8), mK));
+    // Bottom
+    addSpring(Spring(getPoint(4), getPoint(12), mK));
+    addSpring(Spring(getPoint(5), getPoint(12), mK));
+    addSpring(Spring(getPoint(6), getPoint(12), mK));
+    addSpring(Spring(getPoint(7), getPoint(12), mK));
+    // Left
+    addSpring(Spring(getPoint(0), getPoint(11), mK));
+    addSpring(Spring(getPoint(1), getPoint(11), mK));
+    addSpring(Spring(getPoint(4), getPoint(11), mK));
+    addSpring(Spring(getPoint(5), getPoint(11), mK));
+    // Front
+    addSpring(Spring(getPoint(0), getPoint(10), mK));
+    addSpring(Spring(getPoint(3), getPoint(10), mK));
+    addSpring(Spring(getPoint(4), getPoint(10), mK));
+    addSpring(Spring(getPoint(7), getPoint(10), mK));
+    // Back
+    addSpring(Spring(getPoint(1), getPoint(13), mK));
+    addSpring(Spring(getPoint(2), getPoint(13), mK));
+    addSpring(Spring(getPoint(5), getPoint(13), mK));
+    addSpring(Spring(getPoint(6), getPoint(13), mK));
+    // Cross Springs
+    addSpring(Spring(getPoint(0), getPoint(6), mK));
+    addSpring(Spring(getPoint(1), getPoint(7), mK));
+    addSpring(Spring(getPoint(2), getPoint(4), mK));
+    addSpring(Spring(getPoint(3), getPoint(5), mK));
+    addSpring(Spring(getPoint(8), getPoint(11), mK));
+    addSpring(Spring(getPoint(9), getPoint(12), mK));
+    addSpring(Spring(getPoint(10), getPoint(13), mK));
+
+    // Create the faces
+    // Top
+    addTriangle(Triangle(getPoint(1), getPoint(0), getPoint(9)));
+    addTriangle(Triangle(getPoint(2), getPoint(1), getPoint(9)));
+    addTriangle(Triangle(getPoint(3), getPoint(2), getPoint(9)));
+    addTriangle(Triangle(getPoint(0), getPoint(3), getPoint(9)));
+    // Right
+    addTriangle(Triangle(getPoint(2), getPoint(3), getPoint(8)));
+    addTriangle(Triangle(getPoint(6), getPoint(2), getPoint(8)));
+    addTriangle(Triangle(getPoint(7), getPoint(6), getPoint(8)));
+    addTriangle(Triangle(getPoint(3), getPoint(7), getPoint(8)));
+    // Bottom
+    addTriangle(Triangle(getPoint(5), getPoint(6), getPoint(12)));
+    addTriangle(Triangle(getPoint(6), getPoint(7), getPoint(12)));
+    addTriangle(Triangle(getPoint(7), getPoint(4), getPoint(12)));
+    addTriangle(Triangle(getPoint(4), getPoint(5), getPoint(12)));
+    // Left
+    addTriangle(Triangle(getPoint(0), getPoint(1), getPoint(11)));
+    addTriangle(Triangle(getPoint(4), getPoint(0), getPoint(11)));
+    addTriangle(Triangle(getPoint(5), getPoint(4), getPoint(11)));
+    addTriangle(Triangle(getPoint(1), getPoint(5), getPoint(11)));
+    // Front
+    addTriangle(Triangle(getPoint(3), getPoint(0), getPoint(10)));
+    addTriangle(Triangle(getPoint(7), getPoint(3), getPoint(10)));
+    addTriangle(Triangle(getPoint(4), getPoint(7), getPoint(10)));
+    addTriangle(Triangle(getPoint(0), getPoint(4), getPoint(10)));
+    // Back
+    addTriangle(Triangle(getPoint(1), getPoint(2), getPoint(13)));
+    addTriangle(Triangle(getPoint(5), getPoint(1), getPoint(13)));
+    addTriangle(Triangle(getPoint(6), getPoint(5), getPoint(13)));
+    addTriangle(Triangle(getPoint(2), getPoint(6), getPoint(13)));
 }
 
 void Box::draw() {
@@ -89,45 +153,5 @@ void Box::draw() {
     glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
 
     glColor4f(0.0, 0.0, 0.0, 1.0);
-
     glEnd();
-}
-
-void Box::applyGravity(float g, float h) {
-    for(int i = 0; i < 8; i++) {
-        mP[i].mVel(1) -= (g * h) / mP[i].mMass;
-    }
-}
-
-void Box::collideFloor(float level) {
-    for(int i = 0; i < 8; i++) {
-        if(mP[i].mPos(1) <= level) {
-            mP[i].mPos(1) = level + 0.001;
-            mP[i].mVel(1) = std::abs(mP[i].mVel(1));
-            mP[i].mVel *= 0.9;
-        }
-    }
-}
-
-void Box::simulate(float h) {
-    for(int i = 0; i < mNumSprings; i++) {
-        mS[i].contributeImpulse(h);
-    }
-    for(int i = 0; i < 8; i++) {
-        mP[i].simulate(h);
-    }
-}
-
-PointMass* Box::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector3f dir) {
-    PointMass* closest = NULL;
-    float closestDepth = 10000;
-    for(int i = 0; i < 8; i++) {
-        float depth = mP[i].calculateDepth(minDist, p, dir);
-        // If the point is not behind the camera, and closer than the previous point
-        if(depth > 0 && depth < closestDepth) {
-            closest = &mP[i];
-            closestDepth = depth;
-        }
-    }
-    return closest;
 }

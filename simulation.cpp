@@ -36,14 +36,14 @@ void Simulation::simulate() {
     float h = 0.03;
     // Step forward
     if(gravity) {
-        //b.applyGravity(gForce, h);
+        b.applyGravity(gForce, h);
     }
-    //b.simulate(h);
+    b.simulate(h);
     p.simulate(h);
     t.simulate(h);
 
     // Do collision detection with floor
-    //b.collideFloor(-10);
+    b.collideFloor(-10);
 
     // Do collision testing between actors, and freeze all penetrating actors
     if (t.collide(p)) {
@@ -71,7 +71,7 @@ void Simulation::displayFunc() {
     simulate();
 
     // Draw scene (just box and floor right now)
-    //b.draw();
+    b.draw();
     t.draw();
     p.draw();
 

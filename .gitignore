@@ -30,3 +30,6 @@
 
 # Eigen library
 eigen/
+
+# Debug
+jiggle.out.*
