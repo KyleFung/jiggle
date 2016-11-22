@@ -4,17 +4,19 @@
 
 #include <Eigen/Geometry>
 #include <GLUT/glut.h>
+#include <iostream>
 
-Simulation::Simulation() : t(v, v + 1, v + 2), width(500), height(500), c(500, 500, 20),
+Simulation::Simulation() : t(v, v + 1, v + 2), width(500), height(500),
+                           c(Eigen::Vector3f(-30, 5, 20), 0, 60, width, height, 20),
                            closest(NULL), chosenDist(0), mode(0),
                            gravity(false), gForce(10) {
     // Set up the scene as a particle about to penetrate a triangle
-    p.mPos << 3, 1.5, 1.5;
+    p.mPos << 1, 3.5, 5;
     v[0].mPos << 0, 0, 0;
     v[1].mPos << 0, 5, 0;
-    v[2].mPos << 0, 0, 5;
+    v[2].mPos << 5, 0, 0;
 
-    p.mVel << -1, 0, 0;
+    p.mVel << 0, 0, -1;
     v[0].mVel << 0, 0, 0;
     v[1].mVel << 0, 0, 0;
     v[2].mVel << 0, 0, 0;
@@ -46,11 +48,14 @@ void Simulation::simulate() {
     b.collideFloor(-10);
 
     // Do collision testing between actors, and freeze all penetrating actors
-    if (t.collide(p)) {
-        p.mVel << 0, 0, 0;
-        v[0].mVel << 0, 0, 0;
-        v[1].mVel << 0, 0, 0;
-        v[2].mVel << 0, 0, 0;
+    float time = t.collide(p, h);
+    if (time != -1) {
+        p.simulate(time - h - 0.0001);
+        t.simulate(time - h - 0.0001);
+        p.mVel *= -1;
+        v[0].mVel *= -1;
+        v[1].mVel *= -1;
+        v[2].mVel *= -1;
     }
 }
 
@@ -100,6 +105,12 @@ void Simulation::keyHandler(unsigned char key, int x, int y) {
     // Apply gravity
     if(key == 'g') {
         gravity = !gravity;
+    }
+    // Print camera info
+    if(key == 'c') {
+        std::cout << "Pos: " << c.mPos.transpose() << "\n";
+        std::cout << "Pitch: " << c.mPitch << "\n";
+        std::cout << "Yaw: " << c.mYaw << "\n";
     }
 
     c.onKey(key);
