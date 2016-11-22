@@ -5,21 +5,10 @@
 
 #include <iostream>
 
-Camera::Camera(int windowWidth, int windowHeight, float fovy)
-{
-    int centerX = windowWidth / 2;
-    int centerY = windowHeight / 2;
-
-    mPos << 0, 5, 50;
-    mPitch = 0.0f;
-    mYaw = 0.0f;
-
-    mWinWidth = windowWidth;
-    mWinHeight = windowHeight;
-    mFovy = fovy;
-
-    stepSize = 0.5f;
-}
+Camera::Camera(Eigen::Vector3f pos, float pitch, float yaw,
+               int windowWidth, int windowHeight, float fovy) :
+    mPos(pos), mPitch(pitch), mYaw(yaw), mFovy(fovy), mStepSize(0.5f),
+    mWinWidth(windowWidth), mWinHeight(windowHeight) {}
 
 bool Camera::onKey(int key)
 {
@@ -28,28 +17,28 @@ bool Camera::onKey(int key)
     {
         case 'w':
         {
-            mPos += stepSize * getDir();
+            mPos += mStepSize * getDir();
             ret = true;
         }
         break;
 
         case 's':
         {
-            mPos -= stepSize * getDir();
+            mPos -= mStepSize * getDir();
             ret = true;
         }
         break;
 
         case 'a':
         {
-            mPos -= stepSize * getDir().cross(getUp());
+            mPos -= mStepSize * getDir().cross(getUp());
             ret = true;
         }
         break;
 
         case 'd':
         {
-            mPos += stepSize * getDir().cross(getUp());
+            mPos += mStepSize * getDir().cross(getUp());
             ret = true;
         }
         break;

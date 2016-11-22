@@ -6,7 +6,8 @@
 class Camera
 {
   public:
-    Camera(int windowWidth, int windowHeight, float mFovy);
+    Camera(Eigen::Vector3f pos, float pitch, float yaw,
+               int windowWidth, int windowHeight, float fovy);
     bool onKey(int key);
     bool onMouse(int x, int y);
     Eigen::Vector3f getDir();
@@ -22,7 +23,7 @@ class Camera
     float mFovy;
 
   private:
-    float stepSize;
+    float mStepSize;
     int mMouseX;
     int mMouseY;
 };
