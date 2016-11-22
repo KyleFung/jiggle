@@ -11,6 +11,7 @@ class PointMass {
     bool mImmobile;
 
     PointMass();
+    PointMass(const PointMass& p);
     PointMass(float x, float y, float z);
     void simulate(float h);
     float calculateDepth(float minDist, Eigen::Vector3f p, Eigen::Vector3f dir);

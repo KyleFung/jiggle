@@ -9,6 +9,13 @@ PointMass::PointMass() {
     mImmobile = false;
 }
 
+PointMass::PointMass(const PointMass& p) {
+    mPos = p.mPos;
+    mVel = p.mVel;
+    mMass = p.mMass;
+    mImmobile = p.mImmobile;
+}
+
 PointMass::PointMass(float x, float y, float z) {
     mPos << x, y, z;
     mVel << 0, 0, 0;
