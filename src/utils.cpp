@@ -93,14 +93,15 @@ float smallestPosRealRoot(float a0, float a1, float a2, float a3)
     float smallest = 10000;
 
     int degree = 3;
-    if(a3 == 0) {
+    if(approx(a3, 0, 0.0001)) {
         degree = 2;
-        if(a2 == 0) {
+        if(approx(a2, 0, 0.0001)) {
             degree = 1;
         }
     }
 
     if(degree == 3) {
+        // Use eigen solver because I can't implement cardano's...
         Eigen::Matrix<float,4,1> poly;
         poly << a0, a1, a2, a3;
         Eigen::PolynomialSolver<float,3> psolvef(poly);
@@ -110,31 +111,33 @@ float smallestPosRealRoot(float a0, float a1, float a2, float a3)
             if(approx(roots[i].imag(), 0, 0.0001)) {
                 // Check if it's in [0,h] and smaller than current min
                 float real = roots[i].real();
-                if(real >= 0 && real < smallest) {
+                if(real >= 0 && real < smallest && !isnan(real)) {
                     smallest = real;
                 }
             }
         }
     }
     else if(degree == 2) {
-        Eigen::Matrix<float,3,1> poly;
-        poly << a0, a1, a2;
-        Eigen::PolynomialSolver<float,2> psolvef(poly);
-        Eigen::Vector2cf roots = psolvef.roots();
+        // Use quadratic formula here
+        float det = a1 * a1 - 4 * a2 * a0;
+        if(det < 0) {
+            return -1;
+        }
+        Eigen::Vector2f roots;
+        roots[0] = ((-1 * a1) + std::sqrt(det)) / (2 * a2);
+        roots[1] = ((-1 * a1) - std::sqrt(det)) / (2 * a2);
         for(int i = 0; i < degree; i++) {
-            // Check if the root is real
-            if(approx(roots[i].imag(), 0, 0.0001)) {
-                // Check if it's in [0,h] and smaller than current min
-                float real = roots[i].real();
-                if(real >= 0 && real < smallest) {
-                    smallest = real;
-                }
+            // Check if it's in [0,h] and smaller than current min
+            float real = roots[i];
+            if(real >= 0 && real < smallest && !isnan(real)) {
+                smallest = real;
             }
         }
     }
     else if(degree == 1) {
+        // Formula for a line
         float real = -1.0f * (a0 / a1);
-        if(real >= 0 && real < smallest) {
+        if(real >= 0 && real < smallest && !isnan(real)) {
             smallest = real;
         }
     }
