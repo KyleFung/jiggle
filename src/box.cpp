@@ -6,10 +6,12 @@
 Box::Box(Eigen::Vector3f pos) {
     init();
     translate(pos);
+    refreshBounding(0);
 }
 
 Box::Box() {
     init();
+    refreshBounding(0);
 }
 
 void Box::draw() {

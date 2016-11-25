@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "bounding.h"
 #include "edge.h"
 #include "pointmass.h"
 #include "spring.h"
@@ -17,9 +18,13 @@ class Mesh {
     std::vector<Triangle> mT;
     std::vector<Edge> mE;
 
+    // Bounding volume for collision acceleration
+    Bounding mB;
+
     float mK;
 
   public:
+    // Accessors
     Mesh();
     void addPoint(PointMass p);
     void addSpring(Spring s);
@@ -31,7 +36,11 @@ class Mesh {
     Triangle* getTriangle(int i);
     Edge* getEdge(int i);
 
+    // Collision routines
+    Bounding getBounding();
     bool collide(Mesh m, float h);
+    void refreshBounding(float h);
+
     void translate(Eigen::Vector3f pos);
     void simulate(float h);
     void applyGravity(float g, float h);

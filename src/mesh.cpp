@@ -50,6 +50,7 @@ void Mesh::simulate(float h) {
     for(int i = 0; i < numNodes; i++) {
             mP[i].simulate(h);
     }
+    refreshBounding(h);
 }
 
 PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector3f dir) {
@@ -69,6 +70,12 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
 }
 
 bool Mesh::collide(Mesh m, float h) {
+    // Broad phase
+    if(!mB.collide(m.getBounding())) {
+        return false;
+    }
+
+    // Narrow phase
     // Do collision checking. If collision, then freeze the scene
     // Point face sweep 1
     int t0 = mT.size();
@@ -104,6 +111,14 @@ bool Mesh::collide(Mesh m, float h) {
     }
 
     return false;
+}
+
+Bounding Mesh::getBounding() {
+    return mB;
+}
+
+void Mesh::refreshBounding(float h) {
+    mB = Bounding(&mP[0], mP.size(), h);
 }
 
 void Mesh::addPoint(PointMass p) {
