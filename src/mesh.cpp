@@ -16,6 +16,13 @@ void Mesh::draw() {
     }
 }
 
+void Mesh::translate(Eigen::Vector3f pos) {
+    int numNodes = mP.size();
+    for(int i = 0; i < numNodes; i++) {
+        mP[i].mPos += pos;
+    }
+}
+
 void Mesh::applyGravity(float g, float h) {
     int numNodes = mP.size();
     for(int i = 0; i < numNodes; i++) {

@@ -12,7 +12,8 @@ class Simulation {
     int height;
 
     // Different test scenes
-    Box b;
+    Box b1;
+    Box b2;
 
     // Simulation state
     Camera c;

@@ -3,7 +3,59 @@
 #include <GLUT/glut.h>
 #include <math.h>
 
+Box::Box(Eigen::Vector3f pos) {
+    init();
+    translate(pos);
+}
+
 Box::Box() {
+    init();
+}
+
+void Box::draw() {
+    // Draw faces
+    glBegin(GL_QUADS);
+    glColor4f(0.7, 0.0, 0.0, 1.0);
+    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
+    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
+    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
+    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
+
+    glColor4f(0.0, 0.7, 0.0, 1.0);
+    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
+    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
+    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
+    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
+
+    glColor4f(0.0, 0.0, 0.7, 1.0);
+    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
+    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
+    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
+    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
+
+    glColor4f(0.0, 0.7, 0.7, 1.0);
+    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
+    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
+    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
+    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
+
+    glColor4f(0.7, 0.0, 0.7, 1.0);
+    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
+    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
+    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
+    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
+
+    glColor4f(0.7, 0.7, 0.0, 1.0);
+    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
+    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
+    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
+    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
+
+    glColor4f(0.0, 0.0, 0.0, 1.0);
+    glEnd();
+}
+
+void Box::init() {
     mK = 300;
 
     // Add the vertices that make up a box
@@ -168,47 +220,4 @@ Box::Box() {
     addEdge(Edge(getPoint(2), getPoint(13)));
     addEdge(Edge(getPoint(5), getPoint(13)));
     addEdge(Edge(getPoint(6), getPoint(13)));
-}
-
-void Box::draw() {
-    // Draw faces
-    glBegin(GL_QUADS);
-    glColor4f(0.7, 0.0, 0.0, 1.0);
-    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
-    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
-    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
-    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
-
-    glColor4f(0.0, 0.7, 0.0, 1.0);
-    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
-    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
-    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
-    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
-
-    glColor4f(0.0, 0.0, 0.7, 1.0);
-    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
-    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
-    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
-    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
-
-    glColor4f(0.0, 0.7, 0.7, 1.0);
-    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
-    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
-    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
-    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
-
-    glColor4f(0.7, 0.0, 0.7, 1.0);
-    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
-    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
-    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
-    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
-
-    glColor4f(0.7, 0.7, 0.0, 1.0);
-    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
-    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
-    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
-    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
-
-    glColor4f(0.0, 0.0, 0.0, 1.0);
-    glEnd();
 }

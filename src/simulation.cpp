@@ -7,6 +7,7 @@
 #include <iostream>
 
 Simulation::Simulation() : width(500), height(500),
+                           b1(Eigen::Vector3f(0, 0, 0)), b2(Eigen::Vector3f(1, 1, 1)),
                            c(Eigen::Vector3f(0, 5, 50), 0, 0, width, height, 20),
                            closest(NULL), chosenDist(0), mode(0),
                            gravity(false), gForce(10) {}
@@ -27,12 +28,15 @@ void Simulation::simulate() {
     float h = 0.03;
     // Step forward
     if(gravity) {
-        b.applyGravity(gForce, h);
+        b1.applyGravity(gForce, h);
+        b2.applyGravity(gForce, h);
     }
-    b.simulate(h);
+    b1.simulate(h);
+    b2.simulate(h);
 
     // Do collision detection with floor
-    b.collideFloor(-10);
+    b1.collideFloor(-10);
+    b2.collideFloor(-10);
 }
 
 void Simulation::displayFunc() {
@@ -52,7 +56,8 @@ void Simulation::displayFunc() {
     simulate();
 
     // Draw scene (just box and floor right now)
-    b.draw();
+    b1.draw();
+    b2.draw();
 
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0);
@@ -124,7 +129,7 @@ void Simulation::mouseButtonHandler(int button, int state, int x, int y) {
         // If we just pressed down, try to choose a point
         if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
             Eigen::Vector3f ray = c.unproject(x, y);
-            closest = b.getClosestPoint(0.5, c.mPos, ray);
+            closest = b1.getClosestPoint(0.5, c.mPos, ray);
 
             chosen = closest == NULL ? false : true;
             if(closest != NULL) {
