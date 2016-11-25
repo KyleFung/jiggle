@@ -18,6 +18,7 @@ class Simulation {
     // Simulation state
     Camera c;
     PointMass* closest;
+    bool frozen;
     bool chosen;
     float chosenDist;
     int mode; // 0 - view, 1 - picking

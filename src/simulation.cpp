@@ -10,7 +10,7 @@ Simulation::Simulation() : width(500), height(500),
                            b1(Eigen::Vector3f(0, 0, 0)), b2(Eigen::Vector3f(1, 1, 1)),
                            c(Eigen::Vector3f(0, 5, 50), 0, 0, width, height, 20),
                            closest(NULL), chosenDist(0), mode(0),
-                           gravity(false), gForce(10) {}
+                           frozen(false), gravity(false), gForce(10) {}
 
 void Simulation::start() {
     // Set up projection matrix for first time
@@ -25,6 +25,10 @@ void Simulation::start() {
 }
 
 void Simulation::simulate() {
+    if(frozen) {
+        return;
+    }
+
     float h = 0.03;
     // Step forward
     if(gravity) {
@@ -84,6 +88,10 @@ void Simulation::keyHandler(unsigned char key, int x, int y) {
     // Apply gravity
     if(key == 'g') {
         gravity = !gravity;
+    }
+    // Freeze/unfreeze frame
+    if(key == 'f') {
+        frozen = !frozen;
     }
     // Print camera info
     if(key == 'c') {
