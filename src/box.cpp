@@ -75,8 +75,6 @@ void Box::init() {
     addPoint(PointMass(-1, 0, 0));
     addPoint(PointMass(0, -1, 0));
     addPoint(PointMass(0, 0, -1));
-    // Add center of gravity
-    addPoint(PointMass(0, 0, 0));
 
     // Add the springs that make up the box
     // Outside edges

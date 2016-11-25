@@ -70,7 +70,7 @@ float Triangle::collide(PointMass p, float h) {
     Eigen::Vector3f coord = bary(t0.mV[0]->mPos, t0.mV[1]->mPos, t0.mV[2]->mPos,
                                  p0.mPos);
     for(int i = 0; i < 3; i++) {
-        if(coord[i] > 1 || coord[i] < 0) {
+         if(coord[i] > 1 || coord[i] < 0 || isnan(coord[i])) {
             return -1;
         }
     }

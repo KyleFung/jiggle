@@ -31,6 +31,7 @@ class Mesh {
     Triangle* getTriangle(int i);
     Edge* getEdge(int i);
 
+    bool collide(Mesh m, float h);
     void translate(Eigen::Vector3f pos);
     void simulate(float h);
     void applyGravity(float g, float h);

@@ -11,7 +11,7 @@ Simulation::Simulation() : width(500), height(500),
                            closest(NULL), chosenDist(0), mode(0),
                            frozen(false), gravity(false), gForce(10) {
     b[0].translate(Eigen::Vector3f(0, 0, 0));
-    b[1].translate(Eigen::Vector3f(1, 1, 1));
+    b[1].translate(Eigen::Vector3f(0, 5, 1));
 }
 
 void Simulation::start() {
@@ -41,6 +41,16 @@ void Simulation::simulate() {
 
         // Do collision detection with floor
         b[i].collideFloor(-10);
+    }
+
+    // Do collision checking. If collision, then freeze the scene
+    for(int i = 0; i < numBoxes; i++) {
+        for(int j = i + 1; j < numBoxes; j++) {
+            if(b[i].collide(b[j], h)) {
+                frozen = true;
+                return;
+            }
+        }
     }
 }
 

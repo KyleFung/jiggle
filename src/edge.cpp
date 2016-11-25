@@ -71,7 +71,7 @@ float Edge::collide(Edge ed, float h) {
     Eigen::Vector2f coord = intersect(e1.mV[0]->mPos, e1.mV[1]->mPos, e2.mV[0]->mPos, e2.mV[1]->mPos);
 
     for(int i = 0; i < 2; i++) {
-         if(coord[i] > 1 || coord[i] < 0) {
+         if(coord[i] > 1 || coord[i] < 0 || isnan(coord[i])) {
             return -1;
         }
     }

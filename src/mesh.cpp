@@ -68,6 +68,44 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
     return closest;
 }
 
+bool Mesh::collide(Mesh m, float h) {
+    // Do collision checking. If collision, then freeze the scene
+    // Point face sweep 1
+    int t0 = mT.size();
+    int p1 = m.mP.size();
+    for(int i = 0; i < t0; i++) {
+        for(int j = 0; j < p1; j++) {
+            if(mT[i].collide(m.mP[j], h) != -1) {
+                return true;
+            }
+        }
+    }
+
+    // Point face sweep 2
+    int t1 = m.mT.size();
+    int p0 = mP.size();
+    for(int i = 0; i < t1; i++) {
+        for(int j = 0; j < p0; j++) {
+            if(m.mT[i].collide(mP[j], h) != -1) {
+                return true;
+            }
+        }
+    }
+
+    // Edge edge sweep
+    int e0 = mE.size();
+    int e1 = m.mE.size();
+    for(int i = 0; i < e0; i++) {
+        for(int j = 0; j < e1; j++) {
+            if(mE[i].collide(m.mE[j], h) != -1) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void Mesh::addPoint(PointMass p) {
     mP.push_back(p);
 }
