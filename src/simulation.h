@@ -3,6 +3,7 @@
 
 #include "box.h"
 #include "triangle.h"
+#include "edge.h"
 #include "camera.h"
 
 class Simulation {
@@ -10,11 +11,10 @@ class Simulation {
     int width;
     int height;
 
-    // Simulation state
+    // Different test scenes
     Box b;
-    Triangle t;
-    PointMass p;
-    PointMass v[3];
+
+    // Simulation state
     Camera c;
     PointMass* closest;
     bool chosen;

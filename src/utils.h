@@ -16,5 +16,6 @@ float clamp(float value, float lower, float higher);
 bool approx(float a, float b, float e);
 Eigen::Vector3f bary(Eigen::Vector3f a, Eigen::Vector3f b, Eigen::Vector3f c,
                      Eigen::Vector3f p);
+Eigen::Vector2f intersect(Eigen::Vector3f a, Eigen::Vector3f b, Eigen::Vector3f c, Eigen::Vector3f d);
 float smallestPosRealRoot(float a0, float a1, float a2, float a3);
 #endif

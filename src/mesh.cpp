@@ -73,6 +73,10 @@ void Mesh::addTriangle(Triangle t) {
     mT.push_back(t);
 }
 
+void Mesh::addEdge(Edge e) {
+    mE.push_back(e);
+}
+
 PointMass* Mesh::getPoint(int i) {
     return &mP[i];
 }
@@ -83,4 +87,8 @@ Spring* Mesh::getSpring(int i) {
 
 Triangle* Mesh::getTriangle(int i) {
     return &mT[i];
+}
+
+Edge* Mesh::getEdge(int i) {
+    return &mE[i];
 }

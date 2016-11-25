@@ -76,6 +76,17 @@ Eigen::Vector3f bary(Eigen::Vector3f a, Eigen::Vector3f b, Eigen::Vector3f c,
     return Eigen::Vector3f(v, w, u);
 }
 
+Eigen::Vector2f intersect(Eigen::Vector3f a, Eigen::Vector3f b, Eigen::Vector3f c, Eigen::Vector3f d) {
+    Eigen::Vector3f x = (b - a).cross(d - c);
+    Eigen::Vector3f y = (c - a).cross(d - c);
+
+    float t = y.dot(x) / x.dot(x);
+
+    Eigen::Vector3f p = a + t * (b - a);
+    float s = (p - c).dot(d - c) / (d - c).dot(d - c);
+
+    return Eigen::Vector2f(t, s);
+}
 
 float smallestPosRealRoot(float a0, float a1, float a2, float a3)
 {

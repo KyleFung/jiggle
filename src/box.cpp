@@ -79,6 +79,18 @@ Box::Box() {
     addSpring(Spring(getPoint(8), getPoint(11), mK));
     addSpring(Spring(getPoint(9), getPoint(12), mK));
     addSpring(Spring(getPoint(10), getPoint(13), mK));
+    addSpring(Spring(getPoint(8), getPoint(9), mK));
+    addSpring(Spring(getPoint(9), getPoint(11), mK));
+    addSpring(Spring(getPoint(11), getPoint(12), mK));
+    addSpring(Spring(getPoint(12), getPoint(8), mK));
+    addSpring(Spring(getPoint(9), getPoint(10), mK));
+    addSpring(Spring(getPoint(10), getPoint(12), mK));
+    addSpring(Spring(getPoint(12), getPoint(13), mK));
+    addSpring(Spring(getPoint(13), getPoint(9), mK));
+    addSpring(Spring(getPoint(8), getPoint(13), mK));
+    addSpring(Spring(getPoint(13), getPoint(11), mK));
+    addSpring(Spring(getPoint(11), getPoint(10), mK));
+    addSpring(Spring(getPoint(10), getPoint(8), mK));
 
     // Create the faces
     // Top
@@ -111,6 +123,51 @@ Box::Box() {
     addTriangle(Triangle(getPoint(5), getPoint(1), getPoint(13)));
     addTriangle(Triangle(getPoint(6), getPoint(5), getPoint(13)));
     addTriangle(Triangle(getPoint(2), getPoint(6), getPoint(13)));
+
+    // Add Edges
+    addEdge(Edge(getPoint(0), getPoint(1)));
+    addEdge(Edge(getPoint(1), getPoint(2)));
+    addEdge(Edge(getPoint(2), getPoint(3)));
+    addEdge(Edge(getPoint(3), getPoint(0)));
+    addEdge(Edge(getPoint(0), getPoint(4)));
+    addEdge(Edge(getPoint(1), getPoint(5)));
+    addEdge(Edge(getPoint(2), getPoint(6)));
+    addEdge(Edge(getPoint(3), getPoint(7)));
+    addEdge(Edge(getPoint(4), getPoint(5)));
+    addEdge(Edge(getPoint(5), getPoint(6)));
+    addEdge(Edge(getPoint(6), getPoint(7)));
+    addEdge(Edge(getPoint(7), getPoint(4)));
+    // Face springs
+    // Top
+    addEdge(Edge(getPoint(0), getPoint(9)));
+    addEdge(Edge(getPoint(1), getPoint(9)));
+    addEdge(Edge(getPoint(2), getPoint(9)));
+    addEdge(Edge(getPoint(3), getPoint(9)));
+    // Right
+    addEdge(Edge(getPoint(2), getPoint(8)));
+    addEdge(Edge(getPoint(3), getPoint(8)));
+    addEdge(Edge(getPoint(6), getPoint(8)));
+    addEdge(Edge(getPoint(7), getPoint(8)));
+    // Bottom
+    addEdge(Edge(getPoint(4), getPoint(12)));
+    addEdge(Edge(getPoint(5), getPoint(12)));
+    addEdge(Edge(getPoint(6), getPoint(12)));
+    addEdge(Edge(getPoint(7), getPoint(12)));
+    // Left
+    addEdge(Edge(getPoint(0), getPoint(11)));
+    addEdge(Edge(getPoint(1), getPoint(11)));
+    addEdge(Edge(getPoint(4), getPoint(11)));
+    addEdge(Edge(getPoint(5), getPoint(11)));
+    // Front
+    addEdge(Edge(getPoint(0), getPoint(10)));
+    addEdge(Edge(getPoint(3), getPoint(10)));
+    addEdge(Edge(getPoint(4), getPoint(10)));
+    addEdge(Edge(getPoint(7), getPoint(10)));
+    // Back
+    addEdge(Edge(getPoint(1), getPoint(13)));
+    addEdge(Edge(getPoint(2), getPoint(13)));
+    addEdge(Edge(getPoint(5), getPoint(13)));
+    addEdge(Edge(getPoint(6), getPoint(13)));
 }
 
 void Box::draw() {

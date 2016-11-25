@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "edge.h"
 #include "pointmass.h"
 #include "spring.h"
 #include "triangle.h"
@@ -10,10 +11,11 @@
 class Mesh {
   protected:
     // Mesh is represented by a list of point masses and springs
-    // Another list of triangles is used to represent its surface
+    // Another list of triangles and edges is used to represent its surface
     std::vector<PointMass> mP;
     std::vector<Spring> mS;
     std::vector<Triangle> mT;
+    std::vector<Edge> mE;
 
     float mK;
 
@@ -22,10 +24,12 @@ class Mesh {
     void addPoint(PointMass p);
     void addSpring(Spring s);
     void addTriangle(Triangle t);
+    void addEdge(Edge t);
 
     PointMass* getPoint(int i);
     Spring* getSpring(int i);
     Triangle* getTriangle(int i);
+    Edge* getEdge(int i);
 
     void simulate(float h);
     void applyGravity(float g, float h);
