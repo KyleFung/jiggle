@@ -7,10 +7,12 @@
 #include <iostream>
 
 Simulation::Simulation() : width(500), height(500),
-                           b1(Eigen::Vector3f(0, 0, 0)), b2(Eigen::Vector3f(1, 1, 1)),
                            c(Eigen::Vector3f(0, 5, 50), 0, 0, width, height, 20),
                            closest(NULL), chosenDist(0), mode(0),
-                           frozen(false), gravity(false), gForce(10) {}
+                           frozen(false), gravity(false), gForce(10) {
+    b[0].translate(Eigen::Vector3f(0, 0, 0));
+    b[1].translate(Eigen::Vector3f(1, 1, 1));
+}
 
 void Simulation::start() {
     // Set up projection matrix for first time
@@ -29,18 +31,17 @@ void Simulation::simulate() {
         return;
     }
 
-    float h = 0.03;
     // Step forward
-    if(gravity) {
-        b1.applyGravity(gForce, h);
-        b2.applyGravity(gForce, h);
-    }
-    b1.simulate(h);
-    b2.simulate(h);
+    float h = 0.03;
+    for(int i = 0; i < numBoxes; i++) {
+        if(gravity) {
+            b[i].applyGravity(gForce, h);
+        }
+        b[i].simulate(h);
 
-    // Do collision detection with floor
-    b1.collideFloor(-10);
-    b2.collideFloor(-10);
+        // Do collision detection with floor
+        b[i].collideFloor(-10);
+    }
 }
 
 void Simulation::displayFunc() {
@@ -60,8 +61,9 @@ void Simulation::displayFunc() {
     simulate();
 
     // Draw scene (just box and floor right now)
-    b1.draw();
-    b2.draw();
+    for(int i = 0; i < numBoxes; i++) {
+        b[i].draw();
+    }
 
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0);
@@ -137,8 +139,7 @@ void Simulation::mouseButtonHandler(int button, int state, int x, int y) {
         // If we just pressed down, try to choose a point
         if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
             Eigen::Vector3f ray = c.unproject(x, y);
-            closest = b1.getClosestPoint(0.5, c.mPos, ray);
-
+            closest = getClosestPoint(0.5, c.mPos, ray);
             chosen = closest == NULL ? false : true;
             if(closest != NULL) {
                 chosenDist = closest->calculateDepth(0.5, c.mPos, ray);
@@ -153,4 +154,19 @@ void Simulation::mouseButtonHandler(int button, int state, int x, int y) {
             closest = NULL;
         }
     }
+}
+
+PointMass* Simulation::getClosestPoint(float tol, Eigen::Vector3f pos, Eigen::Vector3f ray) {
+    PointMass* closest = NULL;
+    float depth = 10000;
+    for(int i = 0; i < numBoxes; i++) {
+        PointMass* current = b[i].getClosestPoint(tol, pos, ray);
+        float currentDepth = current == NULL ? 10000 : current->calculateDepth(tol, pos, ray);
+
+        if(current != NULL && currentDepth < depth) {
+            closest = current;
+            depth = currentDepth;
+        }
+    }
+    return closest;
 }

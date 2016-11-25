@@ -11,9 +11,9 @@ class Simulation {
     int width;
     int height;
 
-    // Different test scenes
-    Box b1;
-    Box b2;
+    // Series of boxes
+    static const int numBoxes = 2;
+    Box b[numBoxes];
 
     // Simulation state
     Camera c;
@@ -36,6 +36,7 @@ class Simulation {
 
   private:
     void simulate();
+    PointMass* getClosestPoint(float tol, Eigen::Vector3f pos, Eigen::Vector3f ray);
 };
 
 #endif
