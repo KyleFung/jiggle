@@ -176,47 +176,47 @@ void Box::init() {
     addTriangle(Triangle(getPointList(), 2, 6, 13));
 
     // Add Edges
-    addEdge(Edge(getPoint(0), getPoint(1)));
-    addEdge(Edge(getPoint(1), getPoint(2)));
-    addEdge(Edge(getPoint(2), getPoint(3)));
-    addEdge(Edge(getPoint(3), getPoint(0)));
-    addEdge(Edge(getPoint(0), getPoint(4)));
-    addEdge(Edge(getPoint(1), getPoint(5)));
-    addEdge(Edge(getPoint(2), getPoint(6)));
-    addEdge(Edge(getPoint(3), getPoint(7)));
-    addEdge(Edge(getPoint(4), getPoint(5)));
-    addEdge(Edge(getPoint(5), getPoint(6)));
-    addEdge(Edge(getPoint(6), getPoint(7)));
-    addEdge(Edge(getPoint(7), getPoint(4)));
+    addEdge(Edge(getPointList(), 0, 1));
+    addEdge(Edge(getPointList(), 1, 2));
+    addEdge(Edge(getPointList(), 2, 3));
+    addEdge(Edge(getPointList(), 3, 0));
+    addEdge(Edge(getPointList(), 0, 4));
+    addEdge(Edge(getPointList(), 1, 5));
+    addEdge(Edge(getPointList(), 2, 6));
+    addEdge(Edge(getPointList(), 3, 7));
+    addEdge(Edge(getPointList(), 4, 5));
+    addEdge(Edge(getPointList(), 5, 6));
+    addEdge(Edge(getPointList(), 6, 7));
+    addEdge(Edge(getPointList(), 7, 4));
     // Face springs
     // Top
-    addEdge(Edge(getPoint(0), getPoint(9)));
-    addEdge(Edge(getPoint(1), getPoint(9)));
-    addEdge(Edge(getPoint(2), getPoint(9)));
-    addEdge(Edge(getPoint(3), getPoint(9)));
+    addEdge(Edge(getPointList(), 0, 9));
+    addEdge(Edge(getPointList(), 1, 9));
+    addEdge(Edge(getPointList(), 2, 9));
+    addEdge(Edge(getPointList(), 3, 9));
     // Right
-    addEdge(Edge(getPoint(2), getPoint(8)));
-    addEdge(Edge(getPoint(3), getPoint(8)));
-    addEdge(Edge(getPoint(6), getPoint(8)));
-    addEdge(Edge(getPoint(7), getPoint(8)));
+    addEdge(Edge(getPointList(), 2, 8));
+    addEdge(Edge(getPointList(), 3, 8));
+    addEdge(Edge(getPointList(), 6, 8));
+    addEdge(Edge(getPointList(), 7, 8));
     // Bottom
-    addEdge(Edge(getPoint(4), getPoint(12)));
-    addEdge(Edge(getPoint(5), getPoint(12)));
-    addEdge(Edge(getPoint(6), getPoint(12)));
-    addEdge(Edge(getPoint(7), getPoint(12)));
+    addEdge(Edge(getPointList(), 4, 12));
+    addEdge(Edge(getPointList(), 5, 12));
+    addEdge(Edge(getPointList(), 6, 12));
+    addEdge(Edge(getPointList(), 7, 12));
     // Left
-    addEdge(Edge(getPoint(0), getPoint(11)));
-    addEdge(Edge(getPoint(1), getPoint(11)));
-    addEdge(Edge(getPoint(4), getPoint(11)));
-    addEdge(Edge(getPoint(5), getPoint(11)));
+    addEdge(Edge(getPointList(), 0, 11));
+    addEdge(Edge(getPointList(), 1, 11));
+    addEdge(Edge(getPointList(), 4, 11));
+    addEdge(Edge(getPointList(), 5, 11));
     // Front
-    addEdge(Edge(getPoint(0), getPoint(10)));
-    addEdge(Edge(getPoint(3), getPoint(10)));
-    addEdge(Edge(getPoint(4), getPoint(10)));
-    addEdge(Edge(getPoint(7), getPoint(10)));
+    addEdge(Edge(getPointList(), 0, 10));
+    addEdge(Edge(getPointList(), 3, 10));
+    addEdge(Edge(getPointList(), 4, 10));
+    addEdge(Edge(getPointList(), 7, 10));
     // Back
-    addEdge(Edge(getPoint(1), getPoint(13)));
-    addEdge(Edge(getPoint(2), getPoint(13)));
-    addEdge(Edge(getPoint(5), getPoint(13)));
-    addEdge(Edge(getPoint(6), getPoint(13)));
+    addEdge(Edge(getPointList(), 1, 13));
+    addEdge(Edge(getPointList(), 2, 13));
+    addEdge(Edge(getPointList(), 5, 13));
+    addEdge(Edge(getPointList(), 6, 13));
 }

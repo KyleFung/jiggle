@@ -3,10 +3,15 @@
 
 #include "pointmass.h"
 
+#include <vector>
+
 class Edge {
   public:
-    PointMass* mV[2];
-    Edge(PointMass* x0, PointMass* x1);
+    std::vector<PointMass>& mP;
+    int mV[2];
+    Edge(std::vector<PointMass>& p, int x0, int x1);
+    Eigen::Vector3f getPos(int i);
+    Eigen::Vector3f getVel(int i);
     void draw();
     void simulate(float h);
     float collide(Edge e, float h);

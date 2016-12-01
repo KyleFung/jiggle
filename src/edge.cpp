@@ -4,7 +4,7 @@
 
 #include "utils.h"
 
-Edge::Edge(PointMass* x0, PointMass* x1) {
+Edge::Edge(std::vector<PointMass>& p, int x0, int x1) : mP(p) {
     mV[0] = x0;
     mV[1] = x1;
 }
@@ -12,28 +12,36 @@ Edge::Edge(PointMass* x0, PointMass* x1) {
 void Edge::draw() {
     glBegin(GL_LINES);
     glColor4f(1.0, 1.0, 1.0, 1.0);
-    glVertex3f(mV[0]->mPos(0), mV[0]->mPos(1), mV[0]->mPos(2));
-    glVertex3f(mV[1]->mPos(0), mV[1]->mPos(1), mV[1]->mPos(2));
+    glVertex3f(mP[mV[0]].mPos(0), mP[mV[0]].mPos(1), mP[mV[0]].mPos(2));
+    glVertex3f(mP[mV[1]].mPos(0), mP[mV[1]].mPos(1), mP[mV[1]].mPos(2));
     glEnd();
 }
 
 void Edge::simulate(float h) {
     for(int i = 0; i < 2; i++) {
-        mV[i]->simulate(h);
+        mP[mV[i]].simulate(h);
     }
+}
+
+Eigen::Vector3f Edge::getPos(int i) {
+    return mP[mV[i]].mPos;
+}
+
+Eigen::Vector3f Edge::getVel(int i) {
+    return mP[mV[i]].mVel;
 }
 
 float Edge::collide(Edge ed, float h) {
     // Make a temporary copy of the current state
-    PointMass temp1[2];
-    PointMass temp2[2];
-    temp1[0] = PointMass(*mV[0]);
-    temp1[1] = PointMass(*mV[1]);
-    temp2[0] = PointMass(*ed.mV[0]);
-    temp2[1] = PointMass(*ed.mV[1]);
+    PointMass temp[4];
+    temp[0] = PointMass(mP[mV[0]]);
+    temp[1] = PointMass(mP[mV[1]]);
+    temp[2] = PointMass(ed.mP[ed.mV[0]]);
+    temp[3] = PointMass(ed.mP[ed.mV[1]]);
 
-    Edge e1(temp1, temp1 + 1);
-    Edge e2(temp2, temp2 + 1);
+    std::vector<PointMass> tempVec(std::begin(temp), std::end(temp));
+    Edge e1(tempVec, 0, 1);
+    Edge e2(tempVec, 2, 3);
 
     // Step back in time using the temporary copy
     e1.simulate(-1 * h);
@@ -41,12 +49,12 @@ float Edge::collide(Edge ed, float h) {
 
     // Calculate the (3) times that they will be coplanar
     // Compute the 4 coefficients of the cubic equation
-    Eigen::Vector3f a = e1.mV[0]->mPos - e1.mV[1]->mPos;
-    Eigen::Vector3f b = e1.mV[0]->mVel - e1.mV[1]->mVel;
-    Eigen::Vector3f c = e2.mV[0]->mPos - e2.mV[1]->mPos;
-    Eigen::Vector3f d = e2.mV[0]->mVel - e2.mV[1]->mVel;
-    Eigen::Vector3f e = e1.mV[0]->mPos - e2.mV[0]->mPos;
-    Eigen::Vector3f f = e1.mV[0]->mVel - e2.mV[0]->mVel;
+    Eigen::Vector3f a = e1.getPos(0) - e1.getPos(1);
+    Eigen::Vector3f b = e1.getVel(0) - e1.getVel(1);
+    Eigen::Vector3f c = e2.getPos(0) - e2.getPos(1);
+    Eigen::Vector3f d = e2.getVel(0) - e2.getVel(1);
+    Eigen::Vector3f e = e1.getPos(0) - e2.getPos(0);
+    Eigen::Vector3f f = e1.getVel(0) - e2.getVel(0);
 
     Eigen::Vector3f bxc = b.cross(c);
     Eigen::Vector3f bxd = b.cross(d);
@@ -68,7 +76,7 @@ float Edge::collide(Edge ed, float h) {
     // check for line intersection
     e1.simulate(smallest);
     e2.simulate(smallest);
-    Eigen::Vector2f coord = intersect(e1.mV[0]->mPos, e1.mV[1]->mPos, e2.mV[0]->mPos, e2.mV[1]->mPos);
+    Eigen::Vector2f coord = intersect(e1.getPos(0), e1.getPos(1), e2.getPos(0), e2.getPos(1));
 
     for(int i = 0; i < 2; i++) {
          if(coord[i] > 1 || coord[i] < 0 || isnan(coord[i])) {
