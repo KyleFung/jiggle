@@ -1,9 +1,8 @@
 #include "mesh.h"
 
 #include <GLUT/glut.h>
-#include <math.h>
 
-#include <iostream>
+#include <math.h>
 
 Mesh::Mesh() {}
 
@@ -151,4 +150,8 @@ Triangle* Mesh::getTriangle(int i) {
 
 Edge* Mesh::getEdge(int i) {
     return &mE[i];
+}
+
+std::vector<PointMass>& Mesh::getPointList() {
+    return mP;
 }

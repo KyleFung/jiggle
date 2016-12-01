@@ -35,6 +35,7 @@ class Mesh {
     Spring* getSpring(int i);
     Triangle* getTriangle(int i);
     Edge* getEdge(int i);
+    std::vector<PointMass>& getPointList();
 
     // Collision routines
     Bounding getBounding();

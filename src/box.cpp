@@ -1,7 +1,6 @@
 #include "box.h"
 
 #include <GLUT/glut.h>
-#include <math.h>
 
 Box::Box(Eigen::Vector3f pos) {
     init();
@@ -146,35 +145,35 @@ void Box::init() {
 
     // Create the faces
     // Top
-    addTriangle(Triangle(getPoint(1), getPoint(0), getPoint(9)));
-    addTriangle(Triangle(getPoint(2), getPoint(1), getPoint(9)));
-    addTriangle(Triangle(getPoint(3), getPoint(2), getPoint(9)));
-    addTriangle(Triangle(getPoint(0), getPoint(3), getPoint(9)));
+    addTriangle(Triangle(getPointList(), 1, 0, 9));
+    addTriangle(Triangle(getPointList(), 2, 1, 9));
+    addTriangle(Triangle(getPointList(), 3, 2, 9));
+    addTriangle(Triangle(getPointList(), 0, 3, 9));
     // Right
-    addTriangle(Triangle(getPoint(2), getPoint(3), getPoint(8)));
-    addTriangle(Triangle(getPoint(6), getPoint(2), getPoint(8)));
-    addTriangle(Triangle(getPoint(7), getPoint(6), getPoint(8)));
-    addTriangle(Triangle(getPoint(3), getPoint(7), getPoint(8)));
+    addTriangle(Triangle(getPointList(), 2, 3, 8));
+    addTriangle(Triangle(getPointList(), 6, 2, 8));
+    addTriangle(Triangle(getPointList(), 7, 6, 8));
+    addTriangle(Triangle(getPointList(), 3, 7, 8));
     // Bottom
-    addTriangle(Triangle(getPoint(5), getPoint(6), getPoint(12)));
-    addTriangle(Triangle(getPoint(6), getPoint(7), getPoint(12)));
-    addTriangle(Triangle(getPoint(7), getPoint(4), getPoint(12)));
-    addTriangle(Triangle(getPoint(4), getPoint(5), getPoint(12)));
+    addTriangle(Triangle(getPointList(), 5, 6, 12));
+    addTriangle(Triangle(getPointList(), 6, 7, 12));
+    addTriangle(Triangle(getPointList(), 7, 4, 12));
+    addTriangle(Triangle(getPointList(), 4, 5, 12));
     // Left
-    addTriangle(Triangle(getPoint(0), getPoint(1), getPoint(11)));
-    addTriangle(Triangle(getPoint(4), getPoint(0), getPoint(11)));
-    addTriangle(Triangle(getPoint(5), getPoint(4), getPoint(11)));
-    addTriangle(Triangle(getPoint(1), getPoint(5), getPoint(11)));
+    addTriangle(Triangle(getPointList(), 0, 1, 11));
+    addTriangle(Triangle(getPointList(), 4, 0, 11));
+    addTriangle(Triangle(getPointList(), 5, 4, 11));
+    addTriangle(Triangle(getPointList(), 1, 5, 11));
     // Front
-    addTriangle(Triangle(getPoint(3), getPoint(0), getPoint(10)));
-    addTriangle(Triangle(getPoint(7), getPoint(3), getPoint(10)));
-    addTriangle(Triangle(getPoint(4), getPoint(7), getPoint(10)));
-    addTriangle(Triangle(getPoint(0), getPoint(4), getPoint(10)));
+    addTriangle(Triangle(getPointList(), 3, 0, 10));
+    addTriangle(Triangle(getPointList(), 7, 3, 10));
+    addTriangle(Triangle(getPointList(), 4, 7, 10));
+    addTriangle(Triangle(getPointList(), 0, 4, 10));
     // Back
-    addTriangle(Triangle(getPoint(1), getPoint(2), getPoint(13)));
-    addTriangle(Triangle(getPoint(5), getPoint(1), getPoint(13)));
-    addTriangle(Triangle(getPoint(6), getPoint(5), getPoint(13)));
-    addTriangle(Triangle(getPoint(2), getPoint(6), getPoint(13)));
+    addTriangle(Triangle(getPointList(), 1, 2, 13));
+    addTriangle(Triangle(getPointList(), 5, 1, 13));
+    addTriangle(Triangle(getPointList(), 6, 5, 13));
+    addTriangle(Triangle(getPointList(), 2, 6, 13));
 
     // Add Edges
     addEdge(Edge(getPoint(0), getPoint(1)));
