@@ -79,69 +79,69 @@ void Box::init() {
 
     // Add the springs that make up the box
     // Outside edges
-    addSpring(Spring(getPoint(0), getPoint(1), mK));
-    addSpring(Spring(getPoint(1), getPoint(2), mK));
-    addSpring(Spring(getPoint(2), getPoint(3), mK));
-    addSpring(Spring(getPoint(3), getPoint(0), mK));
-    addSpring(Spring(getPoint(0), getPoint(4), mK));
-    addSpring(Spring(getPoint(1), getPoint(5), mK));
-    addSpring(Spring(getPoint(2), getPoint(6), mK));
-    addSpring(Spring(getPoint(3), getPoint(7), mK));
-    addSpring(Spring(getPoint(4), getPoint(5), mK));
-    addSpring(Spring(getPoint(5), getPoint(6), mK));
-    addSpring(Spring(getPoint(6), getPoint(7), mK));
-    addSpring(Spring(getPoint(7), getPoint(4), mK));
+    addSpring(Spring(getPointList(), 0, 1, mK));
+    addSpring(Spring(getPointList(), 1, 2, mK));
+    addSpring(Spring(getPointList(), 2, 3, mK));
+    addSpring(Spring(getPointList(), 3, 0, mK));
+    addSpring(Spring(getPointList(), 0, 4, mK));
+    addSpring(Spring(getPointList(), 1, 5, mK));
+    addSpring(Spring(getPointList(), 2, 6, mK));
+    addSpring(Spring(getPointList(), 3, 7, mK));
+    addSpring(Spring(getPointList(), 4, 5, mK));
+    addSpring(Spring(getPointList(), 5, 6, mK));
+    addSpring(Spring(getPointList(), 6, 7, mK));
+    addSpring(Spring(getPointList(), 7, 4, mK));
     // Face springs
     // Top
-    addSpring(Spring(getPoint(0), getPoint(9), mK));
-    addSpring(Spring(getPoint(1), getPoint(9), mK));
-    addSpring(Spring(getPoint(2), getPoint(9), mK));
-    addSpring(Spring(getPoint(3), getPoint(9), mK));
+    addSpring(Spring(getPointList(), 0, 9, mK));
+    addSpring(Spring(getPointList(), 1, 9, mK));
+    addSpring(Spring(getPointList(), 2, 9, mK));
+    addSpring(Spring(getPointList(), 3, 9, mK));
     // Right
-    addSpring(Spring(getPoint(2), getPoint(8), mK));
-    addSpring(Spring(getPoint(3), getPoint(8), mK));
-    addSpring(Spring(getPoint(6), getPoint(8), mK));
-    addSpring(Spring(getPoint(7), getPoint(8), mK));
+    addSpring(Spring(getPointList(), 2, 8, mK));
+    addSpring(Spring(getPointList(), 3, 8, mK));
+    addSpring(Spring(getPointList(), 6, 8, mK));
+    addSpring(Spring(getPointList(), 7, 8, mK));
     // Bottom
-    addSpring(Spring(getPoint(4), getPoint(12), mK));
-    addSpring(Spring(getPoint(5), getPoint(12), mK));
-    addSpring(Spring(getPoint(6), getPoint(12), mK));
-    addSpring(Spring(getPoint(7), getPoint(12), mK));
+    addSpring(Spring(getPointList(), 4, 12, mK));
+    addSpring(Spring(getPointList(), 5, 12, mK));
+    addSpring(Spring(getPointList(), 6, 12, mK));
+    addSpring(Spring(getPointList(), 7, 12, mK));
     // Left
-    addSpring(Spring(getPoint(0), getPoint(11), mK));
-    addSpring(Spring(getPoint(1), getPoint(11), mK));
-    addSpring(Spring(getPoint(4), getPoint(11), mK));
-    addSpring(Spring(getPoint(5), getPoint(11), mK));
+    addSpring(Spring(getPointList(), 0, 11, mK));
+    addSpring(Spring(getPointList(), 1, 11, mK));
+    addSpring(Spring(getPointList(), 4, 11, mK));
+    addSpring(Spring(getPointList(), 5, 11, mK));
     // Front
-    addSpring(Spring(getPoint(0), getPoint(10), mK));
-    addSpring(Spring(getPoint(3), getPoint(10), mK));
-    addSpring(Spring(getPoint(4), getPoint(10), mK));
-    addSpring(Spring(getPoint(7), getPoint(10), mK));
+    addSpring(Spring(getPointList(), 0, 10, mK));
+    addSpring(Spring(getPointList(), 3, 10, mK));
+    addSpring(Spring(getPointList(), 4, 10, mK));
+    addSpring(Spring(getPointList(), 7, 10, mK));
     // Back
-    addSpring(Spring(getPoint(1), getPoint(13), mK));
-    addSpring(Spring(getPoint(2), getPoint(13), mK));
-    addSpring(Spring(getPoint(5), getPoint(13), mK));
-    addSpring(Spring(getPoint(6), getPoint(13), mK));
+    addSpring(Spring(getPointList(), 1, 13, mK));
+    addSpring(Spring(getPointList(), 2, 13, mK));
+    addSpring(Spring(getPointList(), 5, 13, mK));
+    addSpring(Spring(getPointList(), 6, 13, mK));
     // Cross Springs
-    addSpring(Spring(getPoint(0), getPoint(6), mK));
-    addSpring(Spring(getPoint(1), getPoint(7), mK));
-    addSpring(Spring(getPoint(2), getPoint(4), mK));
-    addSpring(Spring(getPoint(3), getPoint(5), mK));
-    addSpring(Spring(getPoint(8), getPoint(11), mK));
-    addSpring(Spring(getPoint(9), getPoint(12), mK));
-    addSpring(Spring(getPoint(10), getPoint(13), mK));
-    addSpring(Spring(getPoint(8), getPoint(9), mK));
-    addSpring(Spring(getPoint(9), getPoint(11), mK));
-    addSpring(Spring(getPoint(11), getPoint(12), mK));
-    addSpring(Spring(getPoint(12), getPoint(8), mK));
-    addSpring(Spring(getPoint(9), getPoint(10), mK));
-    addSpring(Spring(getPoint(10), getPoint(12), mK));
-    addSpring(Spring(getPoint(12), getPoint(13), mK));
-    addSpring(Spring(getPoint(13), getPoint(9), mK));
-    addSpring(Spring(getPoint(8), getPoint(13), mK));
-    addSpring(Spring(getPoint(13), getPoint(11), mK));
-    addSpring(Spring(getPoint(11), getPoint(10), mK));
-    addSpring(Spring(getPoint(10), getPoint(8), mK));
+    addSpring(Spring(getPointList(), 0, 6, mK));
+    addSpring(Spring(getPointList(), 1, 7, mK));
+    addSpring(Spring(getPointList(), 2, 4, mK));
+    addSpring(Spring(getPointList(), 3, 5, mK));
+    addSpring(Spring(getPointList(), 8, 11, mK));
+    addSpring(Spring(getPointList(), 9, 12, mK));
+    addSpring(Spring(getPointList(), 10, 13, mK));
+    addSpring(Spring(getPointList(), 8, 9, mK));
+    addSpring(Spring(getPointList(), 9, 11, mK));
+    addSpring(Spring(getPointList(), 11, 12, mK));
+    addSpring(Spring(getPointList(), 12, 8, mK));
+    addSpring(Spring(getPointList(), 9, 10, mK));
+    addSpring(Spring(getPointList(), 10, 12, mK));
+    addSpring(Spring(getPointList(), 12, 13, mK));
+    addSpring(Spring(getPointList(), 13, 9, mK));
+    addSpring(Spring(getPointList(), 8, 13, mK));
+    addSpring(Spring(getPointList(), 13, 11, mK));
+    addSpring(Spring(getPointList(), 11, 10, mK));
+    addSpring(Spring(getPointList(), 10, 8, mK));
 
     // Create the faces
     // Top

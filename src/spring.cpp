@@ -1,36 +1,32 @@
 #include "spring.h"
-#include "pointmass.h"
 
 #include <GLUT/glut.h>
-#include <math.h>
 
-#include <iostream>
-
-Spring::Spring(PointMass* p, PointMass* q, float length, float k) {
+Spring::Spring(std::vector<PointMass>& points, int p, int q, float length, float k) : mPoints(points) {
     mP = p;
     mQ = q;
     mL = length;
     mK = k;
 }
 
-Spring::Spring(PointMass* p, PointMass* q, float k) {
+Spring::Spring(std::vector<PointMass>& points, int p, int q, float k) : mPoints(points) {
     mP = p;
     mQ = q;
-    mL = std::sqrt((p->mPos - q->mPos).dot(p->mPos - q->mPos));
+    mL = (mPoints[mP].mPos - mPoints[mQ].mPos).norm();
     mK = k;
 }
 
 void Spring::draw() {
     glBegin(GL_LINES);
     glColor4f(1.0, 1.0, 1.0, 1.0);
-    glVertex3f(mP->mPos(0), mP->mPos(1), mP->mPos(2));
-    glVertex3f(mQ->mPos(0), mQ->mPos(1), mQ->mPos(2));
+    glVertex3f(mPoints[mP].mPos(0), mPoints[mP].mPos(1), mPoints[mP].mPos(2));
+    glVertex3f(mPoints[mQ].mPos(0), mPoints[mQ].mPos(1), mPoints[mQ].mPos(2));
     glEnd();
 }
 
 void Spring::contributeImpulse(float h) {
     // Calculate hooke force
-    Eigen::Vector3f diff = (mP->mPos - mQ->mPos);
+    Eigen::Vector3f diff = (mPoints[mP].mPos - mPoints[mQ].mPos);
     float distance = diff.norm();
 
     // Record force into point
@@ -38,8 +34,8 @@ void Spring::contributeImpulse(float h) {
     Eigen::Vector3f pFrc = -1 * qFrc;
 
     // Account for drag
-    qFrc -= 0.01 * mQ->mVel;
-    pFrc -= 0.01 * mP->mVel;
+    qFrc -= 0.01 * mPoints[mQ].mVel;
+    pFrc -= 0.01 * mPoints[mP].mVel;
 
     Eigen::VectorXf dv(6);
 
@@ -71,7 +67,7 @@ void Spring::contributeImpulse(float h) {
     Eigen::VectorXf f0(6);
     Eigen::VectorXf v0(6);
     f0 << pFrc, qFrc;
-    v0 << mP->mVel , mQ->mVel;
+    v0 << mPoints[mP].mVel, mPoints[mQ].mVel;
 
     Eigen::MatrixXf b(6, 6);
     b = h * (f0 + h * dfdx * v0);
@@ -80,6 +76,6 @@ void Spring::contributeImpulse(float h) {
     dv = A.colPivHouseholderQr().solve(b);
 
     // Integrate velocity
-    mP->mVel += dv.head(3);
-    mQ->mVel += dv.tail(3);
+    mPoints[mP].mVel += dv.head(3);
+    mPoints[mQ].mVel += dv.tail(3);
 }
