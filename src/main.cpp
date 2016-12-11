@@ -6,7 +6,9 @@
 #include "simulation.h"
 
 // Apple hack
+#ifdef __APPLE__
 #include <ApplicationServices/ApplicationServices.h>
+#endif
 
 Simulation s;
 
@@ -48,7 +50,9 @@ int main(int argc, char **argv) {
     glutMouseFunc(mouseButtonCallback);
 
     // Apple hack
+    #ifdef __APPLE__
     CGSetLocalEventsSuppressionInterval(0.0);
+    #endif
 
     s.start();
 }

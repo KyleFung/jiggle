@@ -28,6 +28,13 @@
 *.out
 *.app
 
+# Visual studio stuff
+*.suo
+*.opensdf
+*.sdf
+Debug/
+Release/
+
 # Debug
 jiggle.out.*
 

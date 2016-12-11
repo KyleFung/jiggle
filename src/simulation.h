@@ -37,6 +37,7 @@ class Simulation {
   private:
     void simulate();
     PointMass* getClosestPoint(float tol, Eigen::Vector3f pos, Eigen::Vector3f ray);
+    void warpMouse(int x, int y);
 };
 
 #endif
