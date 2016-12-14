@@ -18,8 +18,10 @@ class Mesh {
     std::vector<Triangle> mT;
     std::vector<Edge> mE;
 
-    // Bounding volume for collision acceleration
+    // Bounding volume for collision acceleration along with a master index list
+    // for in place spatial partitioning
     Bounding mB;
+    std::vector<int> mI;
 
     float mK;
 

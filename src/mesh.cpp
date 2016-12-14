@@ -4,7 +4,7 @@
 
 #include <math.h>
 
-Mesh::Mesh() {}
+Mesh::Mesh() : mB(mP, mI, 0) {}
 
 Mesh::~Mesh() {}
 
@@ -117,11 +117,12 @@ Bounding Mesh::getBounding() {
 }
 
 void Mesh::refreshBounding(float h) {
-    mB = Bounding(&mP[0], mP.size(), h);
+    mB.refresh(h);
 }
 
 void Mesh::addPoint(PointMass p) {
     mP.push_back(p);
+    mI.push_back(mI.size());
 }
 
 void Mesh::addSpring(Spring s) {
