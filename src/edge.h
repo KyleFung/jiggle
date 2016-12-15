@@ -15,6 +15,10 @@ class Edge {
     void draw();
     void simulate(float h);
     float collide(Edge e, float h);
+
+    Eigen::Vector3f getFastest();
+    Eigen::Vector3f getFurthest(Eigen::Vector3f center);
+    Eigen::Vector3f getCentroid();
 };
 
 #endif

@@ -37,6 +37,28 @@ Eigen::Vector3f Triangle::getVel(int i) {
     return mP[mV[i]].mVel;
 }
 
+Eigen::Vector3f Triangle::getFastest() {
+    Eigen::Vector3f fastest = getVel(0);
+    if(getVel(1).norm() > fastest.norm())
+        fastest = getVel(1);
+    if(getVel(2).norm() > fastest.norm())
+        fastest = getVel(2);
+    return fastest;
+}
+
+Eigen::Vector3f Triangle::getFurthest(Eigen::Vector3f center) {
+    Eigen::Vector3f furthest = getPos(0);
+    if((getPos(1) - center).norm() > (furthest - center).norm())
+        furthest = getPos(1);
+    if((getPos(2) - center).norm() > (furthest - center).norm())
+        furthest = getPos(2);
+    return furthest;
+}
+
+Eigen::Vector3f Triangle::getCentroid() {
+    return (getPos(0) + getPos(1) + getPos(2)) / 3.0f;
+}
+
 float Triangle::collide(PointMass p, float h) {
     // Calculate the previous state by stepping back in time
     PointMass tempTriangle[3];

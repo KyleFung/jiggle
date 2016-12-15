@@ -16,6 +16,10 @@ class Triangle {
     void draw();
     void simulate(float h);
     float collide(PointMass p, float h);
+
+    Eigen::Vector3f getFastest();
+    Eigen::Vector3f getFurthest(Eigen::Vector3f center);
+    Eigen::Vector3f getCentroid();
 };
 
 #endif

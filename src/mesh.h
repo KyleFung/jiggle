@@ -18,10 +18,12 @@ class Mesh {
     std::vector<Triangle> mT;
     std::vector<Edge> mE;
 
-    // Bounding volume for collision acceleration along with a master index list
-    // for in place spatial partitioning
+    // Bounding volume for collision acceleration along with a master index lists
+    // for in place spatial partitioning of points, triangles, and edges
     Bounding mB;
-    std::vector<int> mI;
+    std::vector<int> mIP;
+    std::vector<int> mIT;
+    std::vector<int> mIE;
 
     float mK;
 
@@ -43,6 +45,7 @@ class Mesh {
     Bounding getBounding();
     bool collide(Mesh m, float h);
     void refreshBounding(float h);
+    void drawBounding();
 
     void translate(Eigen::Vector3f pos);
     void simulate(float h);

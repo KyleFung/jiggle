@@ -31,6 +31,24 @@ Eigen::Vector3f Edge::getVel(int i) {
     return mP[mV[i]].mVel;
 }
 
+Eigen::Vector3f Edge::getFastest() {
+    Eigen::Vector3f fastest = getVel(0);
+    if(getVel(1).norm() > fastest.norm())
+        fastest = getVel(1);
+    return fastest;
+}
+
+Eigen::Vector3f Edge::getFurthest(Eigen::Vector3f center) {
+    Eigen::Vector3f furthest = getPos(0);
+    if((getPos(1) - center).norm() > (furthest - center).norm())
+        furthest = getPos(1);
+    return furthest;
+}
+
+Eigen::Vector3f Edge::getCentroid() {
+    return (getPos(0) + getPos(1)) / 2.0f;
+}
+
 float Edge::collide(Edge ed, float h) {
     // Make a temporary copy of the current state
     PointMass temp[4];
