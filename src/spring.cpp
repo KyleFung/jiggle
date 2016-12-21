@@ -2,14 +2,14 @@
 
 #include <GLUT/glut.h>
 
-Spring::Spring(std::vector<PointMass>& points, int p, int q, float length, float k) : mPoints(points) {
+Spring::Spring(interval<PointMass>& points, int p, int q, float length, float k) : mPoints(points) {
     mP = p;
     mQ = q;
     mL = length;
     mK = k;
 }
 
-Spring::Spring(std::vector<PointMass>& points, int p, int q, float k) : mPoints(points) {
+Spring::Spring(interval<PointMass>& points, int p, int q, float k) : mPoints(points) {
     mP = p;
     mQ = q;
     mL = (mPoints[mP].mPos - mPoints[mQ].mPos).norm();

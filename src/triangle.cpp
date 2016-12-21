@@ -6,7 +6,7 @@
 
 #include "utils.h"
 
-Triangle::Triangle(std::vector<PointMass>& p, int x0, int x1, int x2) : mP(p) {
+Triangle::Triangle(interval<PointMass>& p, int x0, int x1, int x2) : mP(p) {
     mV[0] = x0;
     mV[1] = x1;
     mV[2] = x2;
@@ -62,11 +62,16 @@ Eigen::Vector3f Triangle::getCentroid() {
 float Triangle::collide(PointMass p, float h) {
     // Calculate the previous state by stepping back in time
     PointMass tempTriangle[3];
+    int tempIndex[3];
     for(int i = 0; i < 3; i++) {
         tempTriangle[i] = PointMass(mP[mV[i]]);
+        tempIndex[i] = i;
     }
-    std::vector<PointMass> tempVec(std::begin(tempTriangle), std::end(tempTriangle));
-    Triangle t0(tempVec , 0, 1, 2);
+
+    std::vector<PointMass> tempPoint(std::begin(tempTriangle), std::end(tempTriangle));
+    std::vector<int> tempInt(std::begin(tempIndex), std::end(tempIndex));
+    interval<PointMass> tempInterval(&tempPoint, &tempInt, 0, 2);
+    Triangle t0(tempInterval, 0, 1, 2);
     PointMass p0(p);
     t0.simulate(-1 * h);
     p0.simulate(-1 * h);

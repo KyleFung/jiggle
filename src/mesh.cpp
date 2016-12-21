@@ -4,9 +4,15 @@
 
 #include <math.h>
 
-Mesh::Mesh() : mB(mP, mIP, mT, mIT, mE, mIE, 0) {}
+#include "interval.h"
 
-Mesh::~Mesh() {}
+Mesh::Mesh() : mB(mP, mT, mE, 0) {}
+
+Mesh::~Mesh() {
+    mP.cleanUp();
+    mT.cleanUp();
+    mE.cleanUp();
+}
 
 void Mesh::draw() {
     int numTriangles = mT.size();
@@ -68,7 +74,7 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
     return closest;
 }
 
-bool Mesh::collide(Mesh m, float h) {
+bool Mesh::collide(Mesh& m, float h) {
     // Broad phase
     if(!mB.collide(m.getBounding())) {
         return false;
@@ -125,8 +131,7 @@ void Mesh::drawBounding() {
 }
 
 void Mesh::addPoint(PointMass p) {
-    mP.push_back(p);
-    mIP.push_back(mIP.size());
+    mP.addItem(p);
 }
 
 void Mesh::addSpring(Spring s) {
@@ -134,31 +139,13 @@ void Mesh::addSpring(Spring s) {
 }
 
 void Mesh::addTriangle(Triangle t) {
-    mT.push_back(t);
-    mIT.push_back(mIT.size());
+    mT.addItem(t);
 }
 
 void Mesh::addEdge(Edge e) {
-    mE.push_back(e);
-    mIE.push_back(mIE.size());
+    mE.addItem(e);
 }
 
-PointMass* Mesh::getPoint(int i) {
-    return &mP[i];
-}
-
-Spring* Mesh::getSpring(int i) {
-    return &mS[i];
-}
-
-Triangle* Mesh::getTriangle(int i) {
-    return &mT[i];
-}
-
-Edge* Mesh::getEdge(int i) {
-    return &mE[i];
-}
-
-std::vector<PointMass>& Mesh::getPointList() {
+interval<PointMass>& Mesh::getPointList() {
     return mP;
 }

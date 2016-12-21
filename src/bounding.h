@@ -3,15 +3,14 @@
 
 #include <vector>
 
+#include "interval.h"
 #include "pointmass.h"
 #include "triangle.h"
 #include "edge.h"
 
 class Bounding {
   public:
-    Bounding(std::vector<PointMass>& points, std::vector<int>& pindices,
-             std::vector<Triangle>& triangles, std::vector<int>& tindices,
-             std::vector<Edge>& edges, std::vector<int>& eindices,
+    Bounding(interval<PointMass>& points, interval<Triangle>& triangles, interval<Edge>& edges,
              float h);
     void refresh(float h);
     bool collide(Bounding b);
@@ -25,18 +24,15 @@ class Bounding {
     float calculateBoundingRadius(float h);
 
     // Vector of integers indexing the vertices contained in this volume
-    std::vector<PointMass>& mPointList;
-    std::vector<int>& mPIndices;
+    interval<PointMass>& mPointList;
     PointMass& getPoint(int i);
 
     // Vector of integers indexing the triangles contained in this volume
-    std::vector<Triangle>& mTriangleList;
-    std::vector<int>& mTIndices;
+    interval<Triangle>& mTriangleList;
     Triangle& getTriangle(int i);
 
     // Vector of integers indexing the edge contained in this volume
-    std::vector<Edge>& mEdgeList;
-    std::vector<int>& mEIndices;
+    interval<Edge>& mEdgeList;
     Edge& getEdge(int i);
 };
 

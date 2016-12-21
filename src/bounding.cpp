@@ -2,13 +2,8 @@
 
 #include <GLUT/glut.h>
 
-Bounding::Bounding(std::vector<PointMass>& points, std::vector<int>& pindices,
-         std::vector<Triangle>& triangles, std::vector<int>& tindices,
-         std::vector<Edge>& edges, std::vector<int>& eindices,
-         float h) :
-    mPointList(points), mPIndices(pindices),
-    mTriangleList(triangles), mTIndices(tindices),
-    mEdgeList(edges), mEIndices(eindices) {
+Bounding::Bounding(interval<PointMass>& points, interval<Triangle>& triangles, interval<Edge>& edges,
+    float h) : mPointList(points), mTriangleList(triangles), mEdgeList(edges) {
     refresh(h);
 }
 
@@ -21,7 +16,7 @@ void Bounding::draw() {
 
 void Bounding::refresh(float h) {
     // If set of 0 geometry, then it is space of nothing
-    if (mPIndices.empty() && mTIndices.empty() && mEIndices.empty()) {
+    if (mPointList.empty() && mTriangleList.empty() && mEdgeList.empty()) {
         mCen << 0, 0, 0;
         mRad = 0;
         return;
@@ -36,7 +31,7 @@ void Bounding::refresh(float h) {
 
 float Bounding::calculateBoundingRadius(float h) {
     float radius = 0;
-    int numPoints = mPIndices.size();
+    int numPoints = mPointList.size();
     for(int i = 0; i < numPoints; i++) {
         float distance = (getPoint(i).mPos - mCen).norm();
         if(distance > radius)
@@ -45,7 +40,7 @@ float Bounding::calculateBoundingRadius(float h) {
         if(distance > radius)
             radius = distance;
     }
-    int numTriangles = mTIndices.size();
+    int numTriangles = mTriangleList.size();
     for(int i = 0; i < numTriangles; i++) {
         Eigen::Vector3f furthest = getTriangle(i).getFurthest(mCen);
         Eigen::Vector3f fastest = getTriangle(i).getFastest();
@@ -53,7 +48,7 @@ float Bounding::calculateBoundingRadius(float h) {
         if(distance > radius)
             radius = distance;
     }
-    int numEdges = mEIndices.size();
+    int numEdges = mEdgeList.size();
     for(int i = 0; i < numEdges; i++) {
         Eigen::Vector3f furthest = getEdge(i).getFurthest(mCen);
         Eigen::Vector3f fastest = getEdge(i).getFastest();
@@ -67,15 +62,15 @@ float Bounding::calculateBoundingRadius(float h) {
 Eigen::Vector3f Bounding::getCentroid() {
     Eigen::Vector3f centroid;
     centroid << 0, 0, 0;
-    int numPoints = mPIndices.size();
+    int numPoints = mPointList.size();
     for(int i = 0; i < numPoints; i++) {
         centroid += getPoint(i).mPos;
     }
-    int numTriangles = mTIndices.size();
+    int numTriangles = mTriangleList.size();
     for(int i = 0; i < numTriangles; i++) {
         centroid += 3.0f * getTriangle(i).getCentroid();
     }
-    int numEdges = mEIndices.size();
+    int numEdges = mEdgeList.size();
     for(int i = 0; i < numEdges; i++) {
         centroid += 2.0f * getEdge(i).getCentroid();
     }
@@ -84,15 +79,15 @@ Eigen::Vector3f Bounding::getCentroid() {
 }
 
 PointMass& Bounding::getPoint(int i) {
-    return mPointList[mPIndices[i]];
+    return mPointList[i];
 }
 
 Triangle& Bounding::getTriangle(int i) {
-    return mTriangleList[mTIndices[i]];
+    return mTriangleList[i];
 }
 
 Edge& Bounding::getEdge(int i) {
-    return mEdgeList[mEIndices[i]];
+    return mEdgeList[i];
 }
 
 bool Bounding::collide(Bounding b) {

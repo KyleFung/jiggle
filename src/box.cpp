@@ -17,40 +17,40 @@ void Box::draw() {
     // Draw faces
     glBegin(GL_QUADS);
     glColor4f(0.7, 0.0, 0.0, 1.0);
-    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
-    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
-    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
-    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
+    glVertex3f(getPointList()[0].mPos(0), getPointList()[0].mPos(1), getPointList()[0].mPos(2));
+    glVertex3f(getPointList()[1].mPos(0), getPointList()[1].mPos(1), getPointList()[1].mPos(2));
+    glVertex3f(getPointList()[2].mPos(0), getPointList()[2].mPos(1), getPointList()[2].mPos(2));
+    glVertex3f(getPointList()[3].mPos(0), getPointList()[3].mPos(1), getPointList()[3].mPos(2));
 
     glColor4f(0.0, 0.7, 0.0, 1.0);
-    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
-    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
-    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
-    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
+    glVertex3f(getPointList()[0].mPos(0), getPointList()[0].mPos(1), getPointList()[0].mPos(2));
+    glVertex3f(getPointList()[1].mPos(0), getPointList()[1].mPos(1), getPointList()[1].mPos(2));
+    glVertex3f(getPointList()[5].mPos(0), getPointList()[5].mPos(1), getPointList()[5].mPos(2));
+    glVertex3f(getPointList()[4].mPos(0), getPointList()[4].mPos(1), getPointList()[4].mPos(2));
 
     glColor4f(0.0, 0.0, 0.7, 1.0);
-    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
-    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
-    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
-    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
+    glVertex3f(getPointList()[4].mPos(0), getPointList()[4].mPos(1), getPointList()[4].mPos(2));
+    glVertex3f(getPointList()[5].mPos(0), getPointList()[5].mPos(1), getPointList()[5].mPos(2));
+    glVertex3f(getPointList()[6].mPos(0), getPointList()[6].mPos(1), getPointList()[6].mPos(2));
+    glVertex3f(getPointList()[7].mPos(0), getPointList()[7].mPos(1), getPointList()[7].mPos(2));
 
     glColor4f(0.0, 0.7, 0.7, 1.0);
-    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
-    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
-    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
-    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
+    glVertex3f(getPointList()[2].mPos(0), getPointList()[2].mPos(1), getPointList()[2].mPos(2));
+    glVertex3f(getPointList()[3].mPos(0), getPointList()[3].mPos(1), getPointList()[3].mPos(2));
+    glVertex3f(getPointList()[7].mPos(0), getPointList()[7].mPos(1), getPointList()[7].mPos(2));
+    glVertex3f(getPointList()[6].mPos(0), getPointList()[6].mPos(1), getPointList()[6].mPos(2));
 
     glColor4f(0.7, 0.0, 0.7, 1.0);
-    glVertex3f(mP[0].mPos(0), mP[0].mPos(1), mP[0].mPos(2));
-    glVertex3f(mP[3].mPos(0), mP[3].mPos(1), mP[3].mPos(2));
-    glVertex3f(mP[7].mPos(0), mP[7].mPos(1), mP[7].mPos(2));
-    glVertex3f(mP[4].mPos(0), mP[4].mPos(1), mP[4].mPos(2));
+    glVertex3f(getPointList()[0].mPos(0), getPointList()[0].mPos(1), getPointList()[0].mPos(2));
+    glVertex3f(getPointList()[3].mPos(0), getPointList()[3].mPos(1), getPointList()[3].mPos(2));
+    glVertex3f(getPointList()[7].mPos(0), getPointList()[7].mPos(1), getPointList()[7].mPos(2));
+    glVertex3f(getPointList()[4].mPos(0), getPointList()[4].mPos(1), getPointList()[4].mPos(2));
 
     glColor4f(0.7, 0.7, 0.0, 1.0);
-    glVertex3f(mP[1].mPos(0), mP[1].mPos(1), mP[1].mPos(2));
-    glVertex3f(mP[2].mPos(0), mP[2].mPos(1), mP[2].mPos(2));
-    glVertex3f(mP[6].mPos(0), mP[6].mPos(1), mP[6].mPos(2));
-    glVertex3f(mP[5].mPos(0), mP[5].mPos(1), mP[5].mPos(2));
+    glVertex3f(getPointList()[1].mPos(0), getPointList()[1].mPos(1), getPointList()[1].mPos(2));
+    glVertex3f(getPointList()[2].mPos(0), getPointList()[2].mPos(1), getPointList()[2].mPos(2));
+    glVertex3f(getPointList()[6].mPos(0), getPointList()[6].mPos(1), getPointList()[6].mPos(2));
+    glVertex3f(getPointList()[5].mPos(0), getPointList()[5].mPos(1), getPointList()[5].mPos(2));
 
     glColor4f(0.0, 0.0, 0.0, 1.0);
     glEnd();

@@ -1,6 +1,7 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#include "interval.h"
 #include "pointmass.h"
 
 #include <Eigen/Dense>
@@ -8,9 +9,9 @@
 
 class Triangle {
   public:
-    std::vector<PointMass>& mP;
+    interval<PointMass>& mP;
     int mV[3];
-    Triangle(std::vector<PointMass>& p, int x0, int x1, int x2);
+    Triangle(interval<PointMass>& p, int x0, int x1, int x2);
     Eigen::Vector3f getPos(int i);
     Eigen::Vector3f getVel(int i);
     void draw();

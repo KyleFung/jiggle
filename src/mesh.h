@@ -5,45 +5,36 @@
 
 #include "bounding.h"
 #include "edge.h"
+#include "interval.h"
 #include "pointmass.h"
 #include "spring.h"
 #include "triangle.h"
 
 class Mesh {
-  protected:
-    // Mesh is represented by a list of point masses and springs
-    // Another list of triangles and edges is used to represent its surface
-    std::vector<PointMass> mP;
-    std::vector<Spring> mS;
-    std::vector<Triangle> mT;
-    std::vector<Edge> mE;
-
-    // Bounding volume for collision acceleration along with a master index lists
-    // for in place spatial partitioning of points, triangles, and edges
+  private:
+    // Geometry expressed as a list of points, triangles, and edges
+    interval<PointMass> mP;
+    interval<Triangle> mT;
+    interval<Edge> mE;
     Bounding mB;
-    std::vector<int> mIP;
-    std::vector<int> mIT;
-    std::vector<int> mIE;
 
-    float mK;
+    // Physical structure expressed as a list of springs
+    std::vector<Spring> mS;
 
   public:
-    // Accessors
     Mesh();
     void addPoint(PointMass p);
     void addSpring(Spring s);
     void addTriangle(Triangle t);
     void addEdge(Edge t);
 
-    PointMass* getPoint(int i);
-    Spring* getSpring(int i);
-    Triangle* getTriangle(int i);
-    Edge* getEdge(int i);
-    std::vector<PointMass>& getPointList();
+    float mK;
+
+    interval<PointMass>& getPointList();
 
     // Collision routines
     Bounding getBounding();
-    bool collide(Mesh m, float h);
+    bool collide(Mesh& m, float h);
     void refreshBounding(float h);
     void drawBounding();
 
