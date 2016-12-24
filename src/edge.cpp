@@ -4,7 +4,7 @@
 
 #include "utils.h"
 
-Edge::Edge(interval<PointMass>& p, int x0, int x1) : mP(p) {
+Edge::Edge(std::vector<PointMass>& p, int x0, int x1) : mP(p) {
     mV[0] = x0;
     mV[1] = x1;
 }
@@ -57,20 +57,9 @@ float Edge::collide(Edge ed, float h) {
     temp[2] = PointMass(ed.mP[ed.mV[0]]);
     temp[3] = PointMass(ed.mP[ed.mV[1]]);
 
-    int tempIndex1[2];
-    int tempIndex2[2];
-    tempIndex1[0] = 0;
-    tempIndex1[1] = 1;
-    tempIndex2[0] = 2;
-    tempIndex2[1] = 3;
-
     std::vector<PointMass> tempPoint(std::begin(temp), std::end(temp));
-    std::vector<int> tempInt1(std::begin(tempIndex1), std::end(tempIndex1));
-    std::vector<int> tempInt2(std::begin(tempIndex2), std::end(tempIndex2));
-    interval<PointMass> tempInterval1(&tempPoint, &tempInt1, 0, 1);
-    interval<PointMass> tempInterval2(&tempPoint, &tempInt2, 0, 1);
-    Edge e1(tempInterval1, 0, 1);
-    Edge e2(tempInterval2, 0, 1);
+    Edge e1(tempPoint, 0, 1);
+    Edge e2(tempPoint, 2, 3);
 
     // Step back in time using the temporary copy
     e1.simulate(-1 * h);

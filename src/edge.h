@@ -8,9 +8,9 @@
 
 class Edge {
   public:
-    interval<PointMass>& mP;
+    std::vector<PointMass>& mP;
     int mV[2];
-    Edge(interval<PointMass>& p, int x0, int x1);
+    Edge(std::vector<PointMass>& p, int x0, int x1);
     Eigen::Vector3f getPos(int i);
     Eigen::Vector3f getVel(int i);
     void draw();

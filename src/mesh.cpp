@@ -118,8 +118,12 @@ bool Mesh::collide(Mesh& m, float h) {
     return false;
 }
 
-Bounding Mesh::getBounding() {
+Bounding& Mesh::getBounding() {
     return mB;
+}
+
+void Mesh::partitionBounding() {
+    mB.partition();
 }
 
 void Mesh::refreshBounding(float h) {

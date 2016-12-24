@@ -33,8 +33,9 @@ class Mesh {
     interval<PointMass>& getPointList();
 
     // Collision routines
-    Bounding getBounding();
+    Bounding& getBounding();
     bool collide(Mesh& m, float h);
+    void partitionBounding();
     void refreshBounding(float h);
     void drawBounding();
 

@@ -9,6 +9,15 @@ template <class T> class interval {
   public:
     interval();
     interval(std::vector<T>* base, std::vector<int>* index, int start, int end);
+    interval(std::vector<T>* base, std::vector<int>* index);
+
+    std::vector<T>* getBaseList();
+    std::vector<int>* getIndexList();
+    void setInterval(int start, int end);
+    void setInterval(std::vector<int>::iterator start,
+                     std::vector<int>::iterator end);
+    std::vector<int>::iterator getStart();
+    std::vector<int>::iterator getEnd();
 
     T& getItem(int i);
     T& operator[](int i);
@@ -43,6 +52,10 @@ interval<T>::interval(std::vector<T>* base, std::vector<int>* index, int start, 
 mBaseList(base), mIndexList(index), mStart(start), mEnd(end) {}
 
 template <typename T>
+interval<T>::interval(std::vector<T>* base, std::vector<int>* index) :
+mBaseList(base), mIndexList(index), mStart(0), mEnd(-1) {}
+
+template <typename T>
 void interval<T>::checkRoot() {
     if (size() != mIndexList->size())
         throw std::string("Only add to master list!");
@@ -67,6 +80,8 @@ void interval<T>::cleanUp() {
     checkRoot();
     delete mBaseList;
     delete mIndexList;
+    mBaseList = NULL;
+    mIndexList = NULL;
 }
 
 template <typename T>
@@ -80,7 +95,41 @@ T& interval<T>::getItem(int i) {
         throw std::out_of_range("Element is out of range");
     }
     int index = (*mIndexList)[i + mStart];
-    return getItemFromBase(index);
+    return (*mBaseList)[index];
+}
+
+template <typename T>
+std::vector<int>::iterator interval<T>::getStart() {
+    return getIndexList()->begin() + mStart;
+}
+
+template <typename T>
+std::vector<int>::iterator interval<T>::getEnd() {
+    return getIndexList()->begin() + mEnd;
+}
+
+template<typename T>
+std::vector<T>* interval<T>::getBaseList() {
+    return mBaseList;
+}
+
+template<typename T>
+std::vector<int>* interval<T>::getIndexList() {
+    return mIndexList;
+}
+
+template <typename T>
+void interval<T>::setInterval(int start, int end) {
+    mStart = start;
+    mEnd = end;
+}
+
+template <typename T>
+void interval<T>::setInterval(std::vector<int>::iterator start,
+                              std::vector<int>::iterator end) {
+    int startIndex = start - mIndexList->begin();
+    int endIndex = end - mIndexList->begin();
+    setInterval(startIndex, endIndex);
 }
 
 template <typename T>

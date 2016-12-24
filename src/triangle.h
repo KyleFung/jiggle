@@ -9,9 +9,9 @@
 
 class Triangle {
   public:
-    interval<PointMass>& mP;
+    std::vector<PointMass>& mP;
     int mV[3];
-    Triangle(interval<PointMass>& p, int x0, int x1, int x2);
+    Triangle(std::vector<PointMass>& p, int x0, int x1, int x2);
     Eigen::Vector3f getPos(int i);
     Eigen::Vector3f getVel(int i);
     void draw();

@@ -7,15 +7,15 @@
 #include <vector>
 
 class Spring {
-    interval<PointMass>& mPoints;
+    std::vector<PointMass>& mPoints;
     int mP;
     int mQ;
     float mK;
     float mL;
 
   public:
-    Spring(interval<PointMass>& points, int p, int q, float length, float k);
-    Spring(interval<PointMass>& points, int p, int q, float k);
+    Spring(std::vector<PointMass>& points, int p, int q, float length, float k);
+    Spring(std::vector<PointMass>& points, int p, int q, float k);
     void draw();
     void contributeImpulse(float h);
 };
