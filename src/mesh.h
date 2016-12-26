@@ -13,9 +13,9 @@
 class Mesh {
   private:
     // Geometry expressed as a list of points, triangles, and edges
-    interval<PointMass> mP;
-    interval<Triangle> mT;
-    interval<Edge> mE;
+    Interval<PointMass> mP;
+    Interval<Triangle> mT;
+    Interval<Edge> mE;
     Bounding mB;
 
     // Physical structure expressed as a list of springs
@@ -30,7 +30,7 @@ class Mesh {
 
     float mK;
 
-    interval<PointMass>& getPointList();
+    Interval<PointMass>& getPointList();
 
     // Collision routines
     Bounding& getBounding();

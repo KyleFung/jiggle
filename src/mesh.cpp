@@ -150,6 +150,6 @@ void Mesh::addEdge(Edge e) {
     mE.addItem(e);
 }
 
-interval<PointMass>& Mesh::getPointList() {
+Interval<PointMass>& Mesh::getPointList() {
     return mP;
 }

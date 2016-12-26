@@ -2,12 +2,12 @@
 
 #include <GLUT/glut.h>
 
-interval<PointMass>* Bounding::sP = NULL;
-interval<Triangle>* Bounding::sT = NULL;
-interval<Edge>* Bounding::sE = NULL;
+Interval<PointMass>* Bounding::sP = NULL;
+Interval<Triangle>* Bounding::sT = NULL;
+Interval<Edge>* Bounding::sE = NULL;
 Eigen::Vector3f Bounding::sCen;
 
-Bounding::Bounding(interval<PointMass>& points, interval<Triangle>& triangles, interval<Edge>& edges,
+Bounding::Bounding(Interval<PointMass>& points, Interval<Triangle>& triangles, Interval<Edge>& edges,
     float h) : mP(points), mT(triangles), mE(edges),
     mPL(points.getBaseList(), points.getIndexList()), mPR(points.getBaseList(), points.getIndexList()),
     mTL(triangles.getBaseList(), triangles.getIndexList()), mTR(triangles.getBaseList(), triangles.getIndexList()),
@@ -73,8 +73,8 @@ void Bounding::partition() {
     mRight = new Bounding(mPR, mTR, mER, 0);
 }
 
-void Bounding::setComparison(interval<PointMass>* points, interval<Triangle>* triangles,
-                             interval<Edge>* edges, Eigen::Vector3f cen) {
+void Bounding::setComparison(Interval<PointMass>* points, Interval<Triangle>* triangles,
+                             Interval<Edge>* edges, Eigen::Vector3f cen) {
     sP = points;
     sT = triangles;
     sE = edges;

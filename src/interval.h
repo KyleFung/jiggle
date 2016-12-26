@@ -5,11 +5,11 @@
 #include <string>
 #include <vector>
 
-template <class T> class interval {
+template <class T> class Interval {
   public:
-    interval();
-    interval(std::vector<T>* base, std::vector<int>* index, int start, int end);
-    interval(std::vector<T>* base, std::vector<int>* index);
+    Interval();
+    Interval(std::vector<T>* base, std::vector<int>* index, int start, int end);
+    Interval(std::vector<T>* base, std::vector<int>* index);
 
     std::vector<T>* getBaseList();
     std::vector<int>* getIndexList();
@@ -23,7 +23,7 @@ template <class T> class interval {
     T& operator[](int i);
 
     // Should only ever get called from root interval
-    T& interval<T>::getItemFromBase(int i);
+    T& Interval<T>::getItemFromBase(int i);
     void addItem(T item);
     void cleanUp();
 
@@ -40,7 +40,7 @@ template <class T> class interval {
 };
 
 template<typename T>
-interval<T>::interval() {
+Interval<T>::Interval() {
     mBaseList = new std::vector<T>();
     mIndexList = new std::vector<int>();
     mStart = 0;
@@ -48,21 +48,21 @@ interval<T>::interval() {
 }
 
 template <typename T>
-interval<T>::interval(std::vector<T>* base, std::vector<int>* index, int start, int end) :
+Interval<T>::Interval(std::vector<T>* base, std::vector<int>* index, int start, int end) :
 mBaseList(base), mIndexList(index), mStart(start), mEnd(end) {}
 
 template <typename T>
-interval<T>::interval(std::vector<T>* base, std::vector<int>* index) :
+Interval<T>::Interval(std::vector<T>* base, std::vector<int>* index) :
 mBaseList(base), mIndexList(index), mStart(0), mEnd(-1) {}
 
 template <typename T>
-void interval<T>::checkRoot() {
+void Interval<T>::checkRoot() {
     if (size() != mIndexList->size())
         throw std::string("Only add to master list!");
 }
 
 template <typename T>
-void interval<T>::addItem(T item) {
+void Interval<T>::addItem(T item) {
     checkRoot();
     mBaseList->push_back(item);
     mIndexList->push_back(mIndexList->size());
@@ -70,13 +70,13 @@ void interval<T>::addItem(T item) {
 }
 
 template <typename T>
-T& interval<T>::getItemFromBase(int i) {
+T& Interval<T>::getItemFromBase(int i) {
     checkRoot();
     return (*mBaseList)[i];
 }
 
 template <typename T>
-void interval<T>::cleanUp() {
+void Interval<T>::cleanUp() {
     checkRoot();
     delete mBaseList;
     delete mIndexList;
@@ -85,12 +85,12 @@ void interval<T>::cleanUp() {
 }
 
 template <typename T>
-T& interval<T>::operator[](int i) {
+T& Interval<T>::operator[](int i) {
     return getItem(i);
 }
 
 template <typename T>
-T& interval<T>::getItem(int i) {
+T& Interval<T>::getItem(int i) {
     if (i < 0 || i >= size()) {
         throw std::out_of_range("Element is out of range");
     }
@@ -99,33 +99,33 @@ T& interval<T>::getItem(int i) {
 }
 
 template <typename T>
-std::vector<int>::iterator interval<T>::getStart() {
+std::vector<int>::iterator Interval<T>::getStart() {
     return getIndexList()->begin() + mStart;
 }
 
 template <typename T>
-std::vector<int>::iterator interval<T>::getEnd() {
+std::vector<int>::iterator Interval<T>::getEnd() {
     return getIndexList()->begin() + mEnd;
 }
 
 template<typename T>
-std::vector<T>* interval<T>::getBaseList() {
+std::vector<T>* Interval<T>::getBaseList() {
     return mBaseList;
 }
 
 template<typename T>
-std::vector<int>* interval<T>::getIndexList() {
+std::vector<int>* Interval<T>::getIndexList() {
     return mIndexList;
 }
 
 template <typename T>
-void interval<T>::setInterval(int start, int end) {
+void Interval<T>::setInterval(int start, int end) {
     mStart = start;
     mEnd = end;
 }
 
 template <typename T>
-void interval<T>::setInterval(std::vector<int>::iterator start,
+void Interval<T>::setInterval(std::vector<int>::iterator start,
                               std::vector<int>::iterator end) {
     int startIndex = start - mIndexList->begin();
     int endIndex = end - mIndexList->begin();
@@ -133,12 +133,12 @@ void interval<T>::setInterval(std::vector<int>::iterator start,
 }
 
 template <typename T>
-inline int interval<T>::size() {
+inline int Interval<T>::size() {
     return mEnd - mStart + 1;
 }
 
 template <typename T>
-bool interval<T>::empty() {
+bool Interval<T>::empty() {
     return (size() <= 0);
 }
 
