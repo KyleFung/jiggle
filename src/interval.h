@@ -6,6 +6,14 @@
 #include <vector>
 
 template <class T> class Interval {
+  private:
+    std::vector<T>* mBaseList;
+    std::vector<int>* mIndexList;
+    int mStart;
+    int mEnd;
+
+    void checkRoot();
+
   public:
     Interval();
     Interval(std::vector<T>* base, std::vector<int>* index, int start, int end);
@@ -29,14 +37,6 @@ template <class T> class Interval {
 
     int size();
     bool empty();
-
-  private:
-    std::vector<T>* mBaseList;
-    std::vector<int>* mIndexList;
-    int mStart;
-    int mEnd;
-
-    void checkRoot();
 };
 
 template<typename T>

@@ -6,42 +6,40 @@
 
 #include "interval.h"
 
-Mesh::Mesh() : mB(mP, mT, mE, 0) {}
+Mesh::Mesh() : mB(mG, 0) {}
 
 Mesh::~Mesh() {
-    mP.cleanUp();
-    mT.cleanUp();
-    mE.cleanUp();
+    mG.cleanUp();
 }
 
 void Mesh::draw() {
-    int numTriangles = mT.size();
+    int numTriangles = mG.getTriangles().size();
     for(int i = 0; i < numTriangles; i++) {
-        mT[i].draw();
+        getTriangle(i).draw();
     }
 }
 
 void Mesh::translate(Eigen::Vector3f pos) {
-    int numNodes = mP.size();
+    int numNodes = mG.getPoints().size();
     for(int i = 0; i < numNodes; i++) {
-        mP[i].mPos += pos;
+        getPoint(i).mPos += pos;
     }
 }
 
 void Mesh::applyGravity(float g, float h) {
-    int numNodes = mP.size();
+    int numNodes = mG.getPoints().size();
     for(int i = 0; i < numNodes; i++) {
-        mP[i].mVel(1) -= (g * h) / mP[i].mMass;
+        getPoint(i).mVel(1) -= (g * h) / getPoint(i).mMass;
     }
 }
 
 void Mesh::collideFloor(float level) {
-    int numNodes = mP.size();
+    int numNodes = mG.getPoints().size();
     for(int i = 0; i < numNodes; i++) {
-        if(mP[i].mPos(1) <= level) {
-            mP[i].mPos(1) = level + 0.001;
-            mP[i].mVel(1) = std::abs(mP[i].mVel(1));
-            mP[i].mVel *= 0.9;
+        if (getPoint(i).mPos(1) <= level) {
+            getPoint(i).mPos(1) = level + 0.001;
+            getPoint(i).mVel(1) = std::abs(getPoint(i).mVel(1));
+            getPoint(i).mVel *= 0.9;
         }
     }
 }
@@ -51,9 +49,9 @@ void Mesh::simulate(float h) {
     for(int i = 0; i < numSprings; i++) {
         mS[i].contributeImpulse(h);
     }
-    int numNodes = mP.size();
+    int numNodes = mG.getPoints().size();
     for(int i = 0; i < numNodes; i++) {
-            mP[i].simulate(h);
+        getPoint(i).simulate(h);
     }
     refreshBounding(h);
 }
@@ -62,12 +60,12 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
     PointMass* closest = NULL;
     float closestDepth = 10000;
 
-    int numNodes = mP.size();
+    int numNodes = mG.getPoints().size();
     for(int i = 0; i < numNodes; i++) {
-        float depth = mP[i].calculateDepth(minDist, p, dir);
+        float depth = getPoint(i).calculateDepth(minDist, p, dir);
         // If the point is not behind the camera, and closer than the previous point
         if(depth > 0 && depth < closestDepth) {
-            closest = &mP[i];
+            closest = &getPoint(i);
             closestDepth = depth;
         }
     }
@@ -83,33 +81,33 @@ bool Mesh::collide(Mesh& m, float h) {
     // Narrow phase
     // Do collision checking. If collision, then freeze the scene
     // Point face sweep 1
-    int t0 = mT.size();
-    int p1 = m.mP.size();
+    int t0 = mG.getTriangles().size();
+    int p1 = m.mG.getPoints().size();
     for(int i = 0; i < t0; i++) {
         for(int j = 0; j < p1; j++) {
-            if(mT[i].collide(m.mP[j], h) != -1) {
+            if(getTriangle(i).collide(m.getPoint(j), h) != -1) {
                 return true;
             }
         }
     }
 
     // Point face sweep 2
-    int t1 = m.mT.size();
-    int p0 = mP.size();
+    int t1 = m.mG.getTriangles().size();
+    int p0 = mG.getPoints().size();
     for(int i = 0; i < t1; i++) {
         for(int j = 0; j < p0; j++) {
-            if(m.mT[i].collide(mP[j], h) != -1) {
+            if(m.getTriangle(i).collide(getPoint(j), h) != -1) {
                 return true;
             }
         }
     }
 
     // Edge edge sweep
-    int e0 = mE.size();
-    int e1 = m.mE.size();
+    int e0 = mG.getEdges().size();
+    int e1 = m.mG.getEdges().size();
     for(int i = 0; i < e0; i++) {
         for(int j = 0; j < e1; j++) {
-            if(mE[i].collide(m.mE[j], h) != -1) {
+            if(getEdge(i).collide(m.getEdge(j), h) != -1) {
                 return true;
             }
         }
@@ -135,7 +133,7 @@ void Mesh::drawBounding() {
 }
 
 void Mesh::addPoint(PointMass p) {
-    mP.addItem(p);
+    mG.addPoint(p);
 }
 
 void Mesh::addSpring(Spring s) {
@@ -143,13 +141,25 @@ void Mesh::addSpring(Spring s) {
 }
 
 void Mesh::addTriangle(Triangle t) {
-    mT.addItem(t);
+    mG.addTriangle(t);
 }
 
 void Mesh::addEdge(Edge e) {
-    mE.addItem(e);
+    mG.addEdge(e);
+}
+
+Edge& Mesh::getEdge(int i) {
+    return mG.getEdges().getBaseList()->at(i);
+}
+
+PointMass& Mesh::getPoint(int i) {
+    return mG.getPoints().getBaseList()->at(i);
+}
+
+Triangle& Mesh::getTriangle(int i) {
+    return mG.getTriangles().getBaseList()->at(i);
 }
 
 Interval<PointMass>& Mesh::getPointList() {
-    return mP;
+    return mG.getPoints();
 }

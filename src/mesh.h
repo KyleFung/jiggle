@@ -5,6 +5,7 @@
 
 #include "bounding.h"
 #include "edge.h"
+#include "geometry.h"
 #include "interval.h"
 #include "pointmass.h"
 #include "spring.h"
@@ -12,14 +13,13 @@
 
 class Mesh {
   private:
-    // Geometry expressed as a list of points, triangles, and edges
-    Interval<PointMass> mP;
-    Interval<Triangle> mT;
-    Interval<Edge> mE;
-    Bounding mB;
-
     // Physical structure expressed as a list of springs
     std::vector<Spring> mS;
+    Geometry mG;
+    Bounding mB;
+    Edge& getEdge(int i);
+    PointMass& getPoint(int i);
+    Triangle& getTriangle(int i);
 
   public:
     Mesh();

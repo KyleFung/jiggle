@@ -79,6 +79,7 @@
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\edge.cpp" />
+    <ClCompile Include="src\geometry.cpp" />
     <ClCompile Include="src\interval.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mesh.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="src\box.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\edge.h" />
+    <ClInclude Include="src\geometry.h" />
     <ClInclude Include="src\interval.h" />
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\pointmass.h" />
