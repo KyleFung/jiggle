@@ -71,7 +71,6 @@ void Interval<T>::addItem(T item) {
 
 template <typename T>
 T& Interval<T>::getItemFromBase(int i) {
-    checkRoot();
     return (*mBaseList)[i];
 }
 

@@ -9,9 +9,12 @@
 #include "triangle.h"
 #include "edge.h"
 
+const int childCount = 8;
+
 class Bounding {
   public:
     Bounding(Geometry& geometry, float h);
+    Bounding(Geometry& geometry, float h, int depth);
     ~Bounding();
     void refresh(float h);
     void partition();
@@ -24,11 +27,11 @@ class Bounding {
     Eigen::Vector3f mCen;
     float mRad;
     float calculateBoundingRadius(float h);
+    int depth;
 
     // Children in bounding tree
-    Bounding* mLeft;
-    Bounding* mRight;
-    Geometry mGL, mGR;
+    Bounding* mBC[childCount];
+    Geometry mGC[childCount];
 
     // Vector of integers indexing the vertices contained in this volume
     Geometry& mG;

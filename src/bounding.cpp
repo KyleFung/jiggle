@@ -2,16 +2,28 @@
 
 #include <GLUT/glut.h>
 
-Bounding::Bounding(Geometry& g, float h) : mG(g), mGL(g), mGR(g),
-    mLeft(NULL), mRight(NULL) {
-    mGL.setEmpty();
-    mGR.setEmpty();
+Bounding::Bounding(Geometry& g, float h) : mG(g), depth(0) {
+    for(int i = 0; i < childCount; i++) {
+        mBC[i] = NULL;
+        mGC[i] = g;
+        mGC[i].setEmpty();
+    }
+    refresh(h);
+}
+
+Bounding::Bounding(Geometry& g, float h, int depth) : mG(g), depth(depth) {
+    for(int i = 0; i < childCount; i++) {
+        mBC[i] = NULL;
+        mGC[i] = g;
+        mGC[i].setEmpty();
+    }
     refresh(h);
 }
 
 Bounding::~Bounding() {
-    delete mLeft;
-    delete mRight;
+    for(int i = 0; i < childCount; i++) {
+        delete mBC[i];
+    }
 }
 
 void Bounding::draw() {
@@ -21,15 +33,15 @@ void Bounding::draw() {
     glTranslatef(-1 * mCen(0), -1 * mCen(1), -1 * mCen(2));
 
     // Recurse through the tree
-    if(mLeft)
-        mLeft->draw();
-    if(mRight)
-        mRight->draw();
+    for(int i = 0; i < childCount; i++) {
+        if(mBC[i])
+            mBC[i]->draw();
+    }
 }
 
 void Bounding::refresh(float h) {
     // If set of 0 geometry, then it is space of nothing
-    if (mG.empty()) {
+    if(mG.empty()) {
         mCen << 0, 0, 0;
         mRad = 0;
         return;
@@ -42,19 +54,24 @@ void Bounding::refresh(float h) {
     mRad = calculateBoundingRadius(h);
 
     // Recurse through the tree
-    if(mLeft)
-        mLeft->refresh(h);
-    if (mRight)
-        mRight->refresh(h);
+    for(int i = 0; i < childCount; i++) {
+        if(mBC[i])
+            mBC[i]->refresh(h);
+    }
 }
 
 void Bounding::partition() {
     mCen = getCentroid();
 
-    mG.partition(mCen, mGL, mGR);
+    mG.partition(mCen, mGC);
 
-    mLeft = new Bounding(mGL, 0);
-    mRight = new Bounding(mGR, 0);
+    for(int i = 0; i < childCount; i++) {
+        if(!mGC[i].empty()) {
+            mBC[i] = new Bounding(mGC[i], 0, depth + 1);
+            if(mGC[i].numberOfPrims() != mG.numberOfPrims())
+                mBC[i]->partition();
+        }
+    }
 }
 
 float Bounding::calculateBoundingRadius(float h) {
