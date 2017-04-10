@@ -2,7 +2,7 @@
 
 #include <GLUT/glut.h>
 
-Bounding::Bounding(Geometry& g, float h) : mG(g), depth(0) {
+Bounding::Bounding(Geometry& g, float h) : mG(g), depth(0), hasChildren(false) {
     for(int i = 0; i < childCount; i++) {
         mBC[i] = NULL;
         mGC[i] = g;
@@ -11,7 +11,7 @@ Bounding::Bounding(Geometry& g, float h) : mG(g), depth(0) {
     refresh(h);
 }
 
-Bounding::Bounding(Geometry& g, float h, int depth) : mG(g), depth(depth) {
+Bounding::Bounding(Geometry& g, float h, int depth) : mG(g), depth(depth), hasChildren(false) {
     for(int i = 0; i < childCount; i++) {
         mBC[i] = NULL;
         mGC[i] = g;
@@ -67,6 +67,7 @@ void Bounding::partition() {
 
     for(int i = 0; i < childCount; i++) {
         if(!mGC[i].empty()) {
+            hasChildren = true;
             mBC[i] = new Bounding(mGC[i], 0, depth + 1);
             if(mGC[i].numberOfPrims() != mG.numberOfPrims())
                 mBC[i]->partition();
@@ -135,10 +136,61 @@ Edge& Bounding::getEdge(int i) {
     return mG.getEdges()[i];
 }
 
-bool Bounding::collide(Bounding& b) {
+bool Bounding::isLeaf() {
+    return !hasChildren;
+}
+
+bool Bounding::collide(Bounding& b, float h) {
+    // Base case brute force
+    if(isLeaf() && b.isLeaf()) {
+        // Point face sweep 1
+        int t0 = mG.getTriangles().size();
+        int p1 = b.mG.getPoints().size();
+        for(int i = 0; i < t0; i++) {
+            for(int j = 0; j < p1; j++) {
+                if(getTriangle(i).collide(b.getPoint(j), h) != -1) {
+                    return true;
+                }
+            }
+        }
+
+        // Point face sweep 2
+        int t1 = b.mG.getTriangles().size();
+        int p0 = mG.getPoints().size();
+        for(int i = 0; i < t1; i++) {
+            for(int j = 0; j < p0; j++) {
+                if(b.getTriangle(i).collide(getPoint(j), h) != -1) {
+                    return true;
+                }
+            }
+        }
+
+        // Edge edge sweep
+        int e0 = mG.getEdges().size();
+        int e1 = b.mG.getEdges().size();
+        for(int i = 0; i < e0; i++) {
+            for(int j = 0; j < e1; j++) {
+                if(getEdge(i).collide(b.getEdge(j), h) != -1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Recursive check
+    // Highest level
     float distance = (mCen - b.mCen).norm();
     if(distance > mRad + b.mRad) {
         return false;
     }
-    return true;
+
+    // Next level
+    for(int i = 0; i < childCount; i++) {
+        if(mBC[i] && b.collide(*mBC[i], h)) {
+            return true;
+        }
+    }
+
+    return false;
 }

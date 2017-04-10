@@ -73,47 +73,8 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
 }
 
 bool Mesh::collide(Mesh& m, float h) {
-    // Broad phase
-    if(!mB.collide(m.getBounding())) {
-        return false;
-    }
-
-    // Narrow phase
-    // Do collision checking. If collision, then freeze the scene
-    // Point face sweep 1
-    int t0 = mG.getTriangles().size();
-    int p1 = m.mG.getPoints().size();
-    for(int i = 0; i < t0; i++) {
-        for(int j = 0; j < p1; j++) {
-            if(getTriangle(i).collide(m.getPoint(j), h) != -1) {
-                return true;
-            }
-        }
-    }
-
-    // Point face sweep 2
-    int t1 = m.mG.getTriangles().size();
-    int p0 = mG.getPoints().size();
-    for(int i = 0; i < t1; i++) {
-        for(int j = 0; j < p0; j++) {
-            if(m.getTriangle(i).collide(getPoint(j), h) != -1) {
-                return true;
-            }
-        }
-    }
-
-    // Edge edge sweep
-    int e0 = mG.getEdges().size();
-    int e1 = m.mG.getEdges().size();
-    for(int i = 0; i < e0; i++) {
-        for(int j = 0; j < e1; j++) {
-            if(getEdge(i).collide(m.getEdge(j), h) != -1) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    // Hierarchical scheme
+    return mB.collide(m.getBounding(), h);
 }
 
 Bounding& Mesh::getBounding() {

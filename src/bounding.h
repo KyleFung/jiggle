@@ -18,9 +18,10 @@ class Bounding {
     ~Bounding();
     void refresh(float h);
     void partition();
-    bool collide(Bounding& b);
+    bool collide(Bounding& b, float h);
     void draw();
     Eigen::Vector3f getCentroid();
+    bool isLeaf();
 
   private:
     // Representation of bounding sphere
@@ -28,6 +29,7 @@ class Bounding {
     float mRad;
     float calculateBoundingRadius(float h);
     int depth;
+    bool hasChildren;
 
     // Children in bounding tree
     Bounding* mBC[childCount];

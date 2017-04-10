@@ -73,7 +73,6 @@ void Simulation::displayFunc() {
     // Draw scene (just box and floor right now)
     for(int i = 0; i < numBoxes; i++) {
         b[i].draw();
-        b[i].drawBounding();
     }
 
     glBegin(GL_QUADS);
