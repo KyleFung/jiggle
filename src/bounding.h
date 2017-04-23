@@ -8,6 +8,7 @@
 #include "pointmass.h"
 #include "triangle.h"
 #include "edge.h"
+#include "collision.h"
 
 const int childCount = 8;
 
@@ -18,7 +19,7 @@ class Bounding {
     ~Bounding();
     void refresh(float h);
     void partition();
-    bool collide(Bounding& b, float h);
+    Collision collide(Bounding& b, float h);
     void draw();
     Eigen::Vector3f getCentroid();
     bool isLeaf();
@@ -40,6 +41,9 @@ class Bounding {
     PointMass& getPoint(int i);
     Triangle& getTriangle(int i);
     Edge& getEdge(int i);
+    int getPointBaseIndex(int i);
+    int getTriangleBaseIndex(int i);
+    int getEdgeBaseIndex(int i);
 };
 
 #endif

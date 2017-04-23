@@ -29,6 +29,7 @@ template <class T> class Interval {
 
     T& getItem(int i);
     T& operator[](int i);
+    int getIndex(int i);
 
     // Should only ever get called from root interval
     T& Interval<T>::getItemFromBase(int i);
@@ -95,6 +96,11 @@ T& Interval<T>::getItem(int i) {
     }
     int index = (*mIndexList)[i + mStart];
     return (*mBaseList)[index];
+}
+
+template <typename T>
+int Interval<T>::getIndex(int i) {
+    return (*mIndexList)[i + mStart];
 }
 
 template <typename T>

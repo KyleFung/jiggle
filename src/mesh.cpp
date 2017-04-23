@@ -74,7 +74,7 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
 
 bool Mesh::collide(Mesh& m, float h) {
     // Hierarchical scheme
-    return mB.collide(m.getBounding(), h);
+    return mB.collide(m.getBounding(), h).exists();
 }
 
 Bounding& Mesh::getBounding() {

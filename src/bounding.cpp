@@ -136,11 +136,23 @@ Edge& Bounding::getEdge(int i) {
     return mG.getEdges()[i];
 }
 
+int Bounding::getPointBaseIndex(int i) {
+    return mG.getPoints().getIndex(i);
+}
+
+int Bounding::getTriangleBaseIndex(int i) {
+    return mG.getTriangles().getIndex(i);
+}
+
+int Bounding::getEdgeBaseIndex(int i) {
+    return mG.getEdges().getIndex(i);
+}
+
 bool Bounding::isLeaf() {
     return !hasChildren;
 }
 
-bool Bounding::collide(Bounding& b, float h) {
+Collision Bounding::collide(Bounding& b, float h) {
     // Base case brute force
     if(isLeaf() && b.isLeaf()) {
         // Point face sweep 1
@@ -148,8 +160,9 @@ bool Bounding::collide(Bounding& b, float h) {
         int p1 = b.mG.getPoints().size();
         for(int i = 0; i < t0; i++) {
             for(int j = 0; j < p1; j++) {
-                if(getTriangle(i).collide(b.getPoint(j), h) != -1) {
-                    return true;
+                float time = getTriangle(i).collide(b.getPoint(j), h);
+                if(time != -1) {
+                    return Collision(Collision::POINTFACE, b.getPointBaseIndex(j), getTriangleBaseIndex(i), time);
                 }
             }
         }
@@ -159,8 +172,9 @@ bool Bounding::collide(Bounding& b, float h) {
         int p0 = mG.getPoints().size();
         for(int i = 0; i < t1; i++) {
             for(int j = 0; j < p0; j++) {
-                if(b.getTriangle(i).collide(getPoint(j), h) != -1) {
-                    return true;
+                float time = b.getTriangle(i).collide(getPoint(j), h);
+                if(time != -1) {
+                    return Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time);
                 }
             }
         }
@@ -170,27 +184,29 @@ bool Bounding::collide(Bounding& b, float h) {
         int e1 = b.mG.getEdges().size();
         for(int i = 0; i < e0; i++) {
             for(int j = 0; j < e1; j++) {
-                if(getEdge(i).collide(b.getEdge(j), h) != -1) {
-                    return true;
+                float time = getEdge(i).collide(b.getEdge(j), h);
+                if(time != -1) {
+                    return Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time);
                 }
             }
         }
-        return false;
+        return Collision();
     }
 
     // Recursive check
     // Highest level
     float distance = (mCen - b.mCen).norm();
     if(distance > mRad + b.mRad) {
-        return false;
+        return Collision();
     }
 
     // Next level
     for(int i = 0; i < childCount; i++) {
-        if(mBC[i] && b.collide(*mBC[i], h)) {
-            return true;
+        Collision c = mBC[i] ? b.collide(*mBC[i], h) : Collision();
+        if(c.exists()) {
+            return c;
         }
     }
 
-    return false;
+    return Collision();
 }

@@ -78,6 +78,7 @@
     <ClCompile Include="src\bounding.cpp" />
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\edge.cpp" />
     <ClCompile Include="src\geometry.cpp" />
     <ClCompile Include="src\interval.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="src\bounding.h" />
     <ClInclude Include="src\box.h" />
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\edge.h" />
     <ClInclude Include="src\geometry.h" />
     <ClInclude Include="src\interval.h" />
