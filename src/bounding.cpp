@@ -61,6 +61,7 @@ void Bounding::refresh(float h) {
 }
 
 void Bounding::partition() {
+#if OPT_BVH == 1
     mCen = getCentroid();
 
     mG.partition(mCen, mGC);
@@ -73,6 +74,7 @@ void Bounding::partition() {
                 mBC[i]->partition();
         }
     }
+#endif
 }
 
 float Bounding::calculateBoundingRadius(float h) {
@@ -153,6 +155,11 @@ bool Bounding::isLeaf() {
 }
 
 Collision Bounding::collide(Bounding& b, float h) {
+    float distance = (mCen - b.mCen).norm();
+    if(distance > mRad + b.mRad) {
+        return Collision();
+    }
+
     // Base case brute force
     if(isLeaf() && b.isLeaf()) {
         // Point face sweep 1
@@ -162,7 +169,7 @@ Collision Bounding::collide(Bounding& b, float h) {
             for(int j = 0; j < p1; j++) {
                 float time = getTriangle(i).collide(b.getPoint(j), h);
                 if(time != -1) {
-                    return Collision(Collision::POINTFACE, b.getPointBaseIndex(j), getTriangleBaseIndex(i), time);
+                    return Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time);
                 }
             }
         }
@@ -184,7 +191,7 @@ Collision Bounding::collide(Bounding& b, float h) {
         int e1 = b.mG.getEdges().size();
         for(int i = 0; i < e0; i++) {
             for(int j = 0; j < e1; j++) {
-                float time = getEdge(i).collide(b.getEdge(j), h);
+                float time = getEdge(i).collide(b.getEdge(j), h).t;
                 if(time != -1) {
                     return Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time);
                 }
@@ -193,17 +200,13 @@ Collision Bounding::collide(Bounding& b, float h) {
         return Collision();
     }
 
-    // Recursive check
-    // Highest level
-    float distance = (mCen - b.mCen).norm();
-    if(distance > mRad + b.mRad) {
-        return Collision();
-    }
-
-    // Next level
+    // Recurse
     for(int i = 0; i < childCount; i++) {
         Collision c = mBC[i] ? b.collide(*mBC[i], h) : Collision();
         if(c.exists()) {
+            int A = c.indexA;
+            c.indexA = c.indexB;
+            c.indexB = A;
             return c;
         }
     }

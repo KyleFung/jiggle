@@ -1,6 +1,8 @@
 #ifndef BOUNDING_H
 #define BOUNDING_H
 
+#define OPT_BVH 1
+
 #include <vector>
 
 #include "geometry.h"
@@ -10,7 +12,12 @@
 #include "edge.h"
 #include "collision.h"
 
+#if OPT_BVH == 1
 const int childCount = 8;
+#endif
+#if OPT_BVH == 0
+const int childCount = 0;
+#endif
 
 class Bounding {
   public:
@@ -33,8 +40,14 @@ class Bounding {
     bool hasChildren;
 
     // Children in bounding tree
+#if OPT_BVH == 1
     Bounding* mBC[childCount];
     Geometry mGC[childCount];
+#endif
+#if OPT_BVH == 0
+    Bounding* mBC[1];
+    Geometry mGC[1];
+#endif
 
     // Vector of integers indexing the vertices contained in this volume
     Geometry& mG;

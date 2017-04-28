@@ -49,7 +49,22 @@ Eigen::Vector3f Edge::getCentroid() {
     return (getPos(0) + getPos(1)) / 2.0f;
 }
 
-float Edge::collide(Edge ed, float h) {
+bool Edge::isCoplanar(Edge other) {
+    Eigen::Vector3f a, b, c, d;
+    a = getPos(0);
+    b = getPos(1);
+    c = other.getPos(0);
+    d = other.getPos(1);
+
+    Eigen::Vector3f normal = (c - a).cross(c - a);
+    Eigen::Vector3f someDir = d - a;
+
+    float coplanarness = normal.dot(someDir);
+
+    return approx(coplanarness, 0, 0.001);
+}
+
+Collision Edge::collide(Edge ed, float h) {
     // Make a temporary copy of the current state
     PointMass temp[4];
     temp[0] = PointMass(mP[mV[0]]);
@@ -87,7 +102,7 @@ float Edge::collide(Edge ed, float h) {
     float smallest = smallestPosRealRoot(a0, a1, a2, a3);
 
     if(smallest > h || smallest == -1) {
-        return -1;
+        return Collision();
     }
 
     // Advance in time up until the collision and then
@@ -98,9 +113,9 @@ float Edge::collide(Edge ed, float h) {
 
     for(int i = 0; i < 2; i++) {
          if(coord[i] > 1 || coord[i] < 0 || isnan(coord[i])) {
-            return -1;
+            return Collision();
         }
     }
 
-    return smallest;
+    return Collision(Collision::EDGEEDGE, -1, -1, smallest);
 }

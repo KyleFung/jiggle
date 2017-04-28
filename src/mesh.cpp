@@ -72,9 +72,9 @@ PointMass* Mesh::getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector
     return closest;
 }
 
-bool Mesh::collide(Mesh& m, float h) {
+Collision Mesh::collide(Mesh& m, float h) {
     // Hierarchical scheme
-    return mB.collide(m.getBounding(), h).exists();
+    return mB.collide(m.getBounding(), h);
 }
 
 Bounding& Mesh::getBounding() {
@@ -107,6 +107,10 @@ void Mesh::addTriangle(Triangle t) {
 
 void Mesh::addEdge(Edge e) {
     mG.addEdge(e);
+}
+
+Geometry& Mesh::getGeometry() {
+    return mG;
 }
 
 Edge& Mesh::getEdge(int i) {

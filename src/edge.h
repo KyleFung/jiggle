@@ -3,6 +3,7 @@
 
 #include "interval.h"
 #include "pointmass.h"
+#include "collision.h"
 
 #include <vector>
 
@@ -15,11 +16,13 @@ class Edge {
     Eigen::Vector3f getVel(int i);
     void draw();
     void simulate(float h);
-    float collide(Edge e, float h);
+    Collision collide(Edge e, float h);
 
     Eigen::Vector3f getFastest();
     Eigen::Vector3f getFurthest(Eigen::Vector3f center);
     Eigen::Vector3f getCentroid();
+
+    bool isCoplanar(Edge other);
 };
 
 #endif

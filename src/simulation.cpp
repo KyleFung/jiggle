@@ -46,9 +46,30 @@ void Simulation::simulate() {
     // Do collision checking. If collision, then freeze the scene
     for(int i = 0; i < numBoxes; i++) {
         for(int j = i + 1; j < numBoxes; j++) {
-            if(b[i].collide(b[j], h)) {
-                frozen = true;
-                return;
+            // We fix up to a certain number of collisions
+            for(int k = 0; k < 10; k++) {
+                Collision c = b[i].collide(b[j], h);
+                if(c.exists()) {
+                    // Correct the intersection
+                    float eps = 0.05 * h;
+                    float reverseStep = c.t - h - eps;
+                    if(c.getType() == Collision::EDGEEDGE) {
+                        b[i].getGeometry().getEdges().getItemFromBase(c.indexA).simulate(reverseStep);
+                        b[j].getGeometry().getEdges().getItemFromBase(c.indexB).simulate(reverseStep);
+                    }
+                    else if(c.getType() == Collision::FACEPOINT) {
+                        b[i].getGeometry().getTriangles().getItemFromBase(c.indexA).simulate(reverseStep);
+                        b[j].getGeometry().getPoints().getItemFromBase(c.indexB).simulate(reverseStep);
+                    }
+                    else if(c.getType() == Collision::POINTFACE) {
+                        b[i].getGeometry().getPoints().getItemFromBase(c.indexA).simulate(reverseStep);
+                        b[j].getGeometry().getTriangles().getItemFromBase(c.indexB).simulate(reverseStep);
+                    }
+                    frozen = true;
+                }
+                else {
+                    break;
+                }
             }
         }
     }

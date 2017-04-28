@@ -3,23 +3,20 @@
 
 class Collision {
   public:
-    enum ColType {EDGEEDGE, POINTFACE, NONE};
+    enum ColType {EDGEEDGE, POINTFACE, FACEPOINT, NONE};
     Collision();
     Collision(ColType c, int A, int B, float t);
     bool exists();
+    ColType getType();
+
+    // Base indices of intersecting geometry and intersection time
+    int indexA;
+    int indexB;
+    float t;
 
   private:
     ColType type;
     bool existence;
-    float t;
-
-    // For intersections of Edge-Edge variety
-    int mEdgeA;
-    int mEdgeB;
-
-    // For intersections of Face-Point variety
-    int mFace;
-    int mPoint;
 };
 
 #endif

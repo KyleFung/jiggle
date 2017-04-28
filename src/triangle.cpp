@@ -59,6 +59,21 @@ Eigen::Vector3f Triangle::getCentroid() {
     return (getPos(0) + getPos(1) + getPos(2)) / 3.0f;
 }
 
+bool Triangle::isCoplanar(PointMass p) {
+    Eigen::Vector3f a, b, c, d;
+    a = getPos(0);
+    b = getPos(1);
+    c = getPos(2);
+    d = p.mPos;
+
+    Eigen::Vector3f normal = (c - a).cross(c - a);
+    Eigen::Vector3f someDir = d - a;
+
+    float coplanarness = normal.dot(someDir);
+
+    return approx(coplanarness, 0, 0.0000001);
+}
+
 float Triangle::collide(PointMass p, float h) {
     // Calculate the previous state by stepping back in time
     PointMass tempTriangle[3];

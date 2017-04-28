@@ -10,6 +10,7 @@
 #include "pointmass.h"
 #include "spring.h"
 #include "triangle.h"
+#include "collision.h"
 
 class Mesh {
   private:
@@ -23,6 +24,7 @@ class Mesh {
 
   public:
     Mesh();
+    Geometry& getGeometry();
     void addPoint(PointMass p);
     void addSpring(Spring s);
     void addTriangle(Triangle t);
@@ -34,7 +36,7 @@ class Mesh {
 
     // Collision routines
     Bounding& getBounding();
-    bool collide(Mesh& m, float h);
+    Collision collide(Mesh& m, float h);
     void partitionBounding();
     void refreshBounding(float h);
     void drawBounding();
