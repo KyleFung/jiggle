@@ -13,7 +13,7 @@ Spring dynamics (https://www.cs.cmu.edu/~baraff/papers/sig98.pdf)
 Continuous collision detection (https://graphics.stanford.edu/courses/cs468-02-winter/Papers/Collisions_vetements.pdf)  
 Collision response (https://www.cs.utah.edu/~ladislav/kavan03rigid/kavan03rigid.pdf)
 
-<b>Dependencies:</b>
+<b>Dependencies:</b>  
 OpenGL (You will need a copy of the OpenGL dll/lib)   
 GLUT (You will need to get a copy of the glut and glu dll/lib)  
 Eigen (Included as a submodule)
