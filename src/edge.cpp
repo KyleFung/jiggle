@@ -49,6 +49,12 @@ Eigen::Vector3f Edge::getCentroid() {
     return (getPos(0) + getPos(1)) / 2.0f;
 }
 
+Eigen::Vector3f Edge::getNormal(Edge& e) {
+    Eigen::Vector3f a = getPos(0) - getPos(1);
+    Eigen::Vector3f b = e.getPos(0) - e.getPos(1);
+    return a.cross(b);
+}
+
 bool Edge::isCoplanar(Edge other) {
     Eigen::Vector3f a, b, c, d;
     a = getPos(0);
@@ -117,5 +123,5 @@ Collision Edge::collide(Edge ed, float h) {
         }
     }
 
-    return Collision(Collision::EDGEEDGE, -1, -1, smallest);
+    return Collision(Collision::EDGEEDGE, -1, -1, smallest, Eigen::Vector3f());
 }

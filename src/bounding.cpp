@@ -167,9 +167,11 @@ Collision Bounding::collide(Bounding& b, float h) {
         int p1 = b.mG.getPoints().size();
         for(int i = 0; i < t0; i++) {
             for(int j = 0; j < p1; j++) {
-                float time = getTriangle(i).collide(b.getPoint(j), h);
+                Triangle& t = getTriangle(i);
+                PointMass& p = b.getPoint(j);
+                float time = t.collide(p, h);
                 if(time != -1) {
-                    return Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time);
+                    return Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time, t.getNormal());
                 }
             }
         }
@@ -179,9 +181,11 @@ Collision Bounding::collide(Bounding& b, float h) {
         int p0 = mG.getPoints().size();
         for(int i = 0; i < t1; i++) {
             for(int j = 0; j < p0; j++) {
-                float time = b.getTriangle(i).collide(getPoint(j), h);
+                Triangle& t = b.getTriangle(i);
+                PointMass& p = getPoint(j);
+                float time = t.collide(p, h);
                 if(time != -1) {
-                    return Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time);
+                    return Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time, t.getNormal());
                 }
             }
         }
@@ -191,9 +195,11 @@ Collision Bounding::collide(Bounding& b, float h) {
         int e1 = b.mG.getEdges().size();
         for(int i = 0; i < e0; i++) {
             for(int j = 0; j < e1; j++) {
-                float time = getEdge(i).collide(b.getEdge(j), h).t;
+                Edge& e1 = getEdge(i);
+                Edge& e2 = b.getEdge(j);
+                float time = e1.collide(e2, h).t;
                 if(time != -1) {
-                    return Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time);
+                    return Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time, e1.getNormal(e2));
                 }
             }
         }
@@ -204,9 +210,7 @@ Collision Bounding::collide(Bounding& b, float h) {
     for(int i = 0; i < childCount; i++) {
         Collision c = mBC[i] ? b.collide(*mBC[i], h) : Collision();
         if(c.exists()) {
-            int A = c.indexA;
-            c.indexA = c.indexB;
-            c.indexB = A;
+            c.flip();
             return c;
         }
     }

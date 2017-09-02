@@ -59,6 +59,16 @@ Eigen::Vector3f Triangle::getCentroid() {
     return (getPos(0) + getPos(1) + getPos(2)) / 3.0f;
 }
 
+Eigen::Vector3f Triangle::getNormal() {
+    Eigen::Vector3f a, b, c;
+    a = getPos(0);
+    b = getPos(1);
+    c = getPos(2);
+
+    Eigen::Vector3f normal = (c - a).cross(b - a);
+    return normal.normalized();
+}
+
 bool Triangle::isCoplanar(PointMass p) {
     Eigen::Vector3f a, b, c, d;
     a = getPos(0);
@@ -66,7 +76,7 @@ bool Triangle::isCoplanar(PointMass p) {
     c = getPos(2);
     d = p.mPos;
 
-    Eigen::Vector3f normal = (c - a).cross(c - a);
+    Eigen::Vector3f normal = (c - a).cross(b - a);
     Eigen::Vector3f someDir = d - a;
 
     float coplanarness = normal.dot(someDir);

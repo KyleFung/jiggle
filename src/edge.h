@@ -21,6 +21,7 @@ class Edge {
     Eigen::Vector3f getFastest();
     Eigen::Vector3f getFurthest(Eigen::Vector3f center);
     Eigen::Vector3f getCentroid();
+    Eigen::Vector3f getNormal(Edge& e);
 
     bool isCoplanar(Edge other);
 };
