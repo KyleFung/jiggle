@@ -2,14 +2,14 @@
 
 #include <GLUT/glut.h>
 
-Box::Box(Eigen::Vector3f pos) {
+Box::Box(Eigen::Vector3f pos) : Mesh(std::string("default")) {
     init();
     translate(pos);
     partitionBounding();
     refreshBounding(0);
 }
 
-Box::Box() {
+Box::Box() : Mesh(std::string("default")) {
     init();
     partitionBounding();
     refreshBounding(0);
@@ -64,21 +64,22 @@ void Box::init() {
 
     // Add the vertices that make up a box
     // Add corners
-    addPoint(PointMass(-1, +1, +1));
-    addPoint(PointMass(-1, +1, -1));
-    addPoint(PointMass(+1, +1, -1));
-    addPoint(PointMass(+1, +1, +1));
-    addPoint(PointMass(-1, -1, +1));
-    addPoint(PointMass(-1, -1, -1));
-    addPoint(PointMass(+1, -1, -1));
-    addPoint(PointMass(+1, -1, +1));
+    int id = 0;
+    addPoint(PointMass(-1, +1, +1, id++));
+    addPoint(PointMass(-1, +1, -1, id++));
+    addPoint(PointMass(+1, +1, -1, id++));
+    addPoint(PointMass(+1, +1, +1, id++));
+    addPoint(PointMass(-1, -1, +1, id++));
+    addPoint(PointMass(-1, -1, -1, id++));
+    addPoint(PointMass(+1, -1, -1, id++));
+    addPoint(PointMass(+1, -1, +1, id++));
     // Add face centers
-    addPoint(PointMass(1, 0, 0));
-    addPoint(PointMass(0, 1, 0));
-    addPoint(PointMass(0, 0, 1));
-    addPoint(PointMass(-1, 0, 0));
-    addPoint(PointMass(0, -1, 0));
-    addPoint(PointMass(0, 0, -1));
+    addPoint(PointMass(1, 0, 0, id++));
+    addPoint(PointMass(0, 1, 0, id++));
+    addPoint(PointMass(0, 0, 1, id++));
+    addPoint(PointMass(-1, 0, 0, id++));
+    addPoint(PointMass(0, -1, 0, id++));
+    addPoint(PointMass(0, 0, -1, id++));
 
     std::vector<PointMass>& points = *getPointList().getBaseList();
 

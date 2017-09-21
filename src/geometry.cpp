@@ -144,3 +144,7 @@ void Geometry::addTriangle(Triangle& t) {
 void Geometry::addEdge(Edge& e) {
     mE.addItem(e);
 }
+
+void Geometry::setName(std::string name) {
+    mName = name;
+}

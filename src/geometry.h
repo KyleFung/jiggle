@@ -25,6 +25,9 @@ class Geometry
     bool empty();
     int numberOfPrims();
 
+    std::string mName;
+    void setName(std::string name);
+
     void partition(Eigen::Vector3f cen, Geometry* children);
     void partition(Eigen::Vector3f cen, Geometry& l, Geometry& r, int split);
 

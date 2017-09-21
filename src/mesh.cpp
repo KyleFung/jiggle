@@ -6,10 +6,17 @@
 
 #include "interval.h"
 
-Mesh::Mesh() : mB(mG, 0) {}
+Mesh::Mesh(std::string name) : mB(mG, 0), mName(name) {
+    mG.setName("Geometry of " + mName);
+}
 
 Mesh::~Mesh() {
     mG.cleanUp();
+}
+
+void Mesh::setName(std::string name) {
+    mName = name;
+    mG.setName("Geometry of " + mName);
 }
 
 void Mesh::draw() {
@@ -23,6 +30,17 @@ void Mesh::translate(Eigen::Vector3f pos) {
     int numNodes = mG.getPoints().size();
     for(int i = 0; i < numNodes; i++) {
         getPoint(i).mPos += pos;
+    }
+}
+
+void Mesh::rotate(Eigen::Vector3f axis, float degrees) {
+    axis.normalize();
+    Eigen::Matrix3f rotation;
+    rotation = Eigen::AngleAxisf(degToRad(degrees), axis);
+    int numNodes = mG.getPoints().size();
+    for (int i = 0; i < numNodes; i++) {
+        PointMass& p = getPoint(i);
+        p.mPos = rotation * p.mPos;
     }
 }
 

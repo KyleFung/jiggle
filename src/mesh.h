@@ -11,6 +11,7 @@
 #include "spring.h"
 #include "triangle.h"
 #include "collision.h"
+#include "utils.h"
 
 class Mesh {
   private:
@@ -23,7 +24,7 @@ class Mesh {
     Triangle& getTriangle(int i);
 
   public:
-    Mesh();
+    Mesh(std::string name);
     Geometry& getGeometry();
     void addPoint(PointMass p);
     void addSpring(Spring s);
@@ -31,6 +32,7 @@ class Mesh {
     void addEdge(Edge t);
 
     float mK;
+    std::string mName;
 
     Interval<PointMass>& getPointList();
 
@@ -42,7 +44,9 @@ class Mesh {
     void drawBounding();
 
     void translate(Eigen::Vector3f pos);
+    void rotate(Eigen::Vector3f axis, float degrees);
     void simulate(float h);
+    void setName(std::string name);
     void applyGravity(float g, float h);
     void collideFloor(float level);
     PointMass* getClosestPoint(float minDist, Eigen::Vector3f p, Eigen::Vector3f dir);

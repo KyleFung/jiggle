@@ -162,6 +162,7 @@ Collision Bounding::collide(Bounding& b, float h) {
 
     // Base case brute force
     if(isLeaf() && b.isLeaf()) {
+        Collision candidates[3];
         // Point face sweep 1
         int t0 = mG.getTriangles().size();
         int p1 = b.mG.getPoints().size();
@@ -169,9 +170,11 @@ Collision Bounding::collide(Bounding& b, float h) {
             for(int j = 0; j < p1; j++) {
                 Triangle& t = getTriangle(i);
                 PointMass& p = b.getPoint(j);
+                int bi = getTriangleBaseIndex(i);
+                int bj = b.getPointBaseIndex(j);
                 float time = t.collide(p, h);
-                if(time != -1) {
-                    return Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time, t.getNormal());
+                if(time != -1 && (time < candidates[0].t || candidates[0].t == -1)) {
+                    candidates[0] = Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time, t.getNormal());
                 }
             }
         }
@@ -183,9 +186,11 @@ Collision Bounding::collide(Bounding& b, float h) {
             for(int j = 0; j < p0; j++) {
                 Triangle& t = b.getTriangle(i);
                 PointMass& p = getPoint(j);
+                int bj = getPointBaseIndex(j);
+                int bi = b.getTriangleBaseIndex(i);
                 float time = t.collide(p, h);
-                if(time != -1) {
-                    return Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time, t.getNormal());
+                if (time != -1 && (time < candidates[1].t || candidates[1].t == -1)) {
+                    candidates[1] = Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time, t.getNormal());
                 }
             }
         }
@@ -198,22 +203,30 @@ Collision Bounding::collide(Bounding& b, float h) {
                 Edge& e1 = getEdge(i);
                 Edge& e2 = b.getEdge(j);
                 float time = e1.collide(e2, h).t;
-                if(time != -1) {
-                    return Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time, e1.getNormal(e2));
+                if (time != -1 && (time < candidates[2].t || candidates[2].t == -1)) {
+                    candidates[2] = Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time, e1.getNormal(e2));
                 }
             }
         }
-        return Collision();
+
+        Collision result = candidates[0];
+        for(int i = 1; i < 3; i++) {
+            if(candidates[i].t != -1 && (candidates[i].t < result.t || result.t == -1)) {
+                result = candidates[i];
+            }
+        }
+        return result;
     }
 
     // Recurse
+    Collision oldest;
     for(int i = 0; i < childCount; i++) {
         Collision c = mBC[i] ? b.collide(*mBC[i], h) : Collision();
-        if(c.exists()) {
+        if(c.exists() && (c.t < oldest.t || !oldest.exists())) {
             c.flip();
-            return c;
+            oldest = c;
         }
     }
 
-    return Collision();
+    return oldest;
 }

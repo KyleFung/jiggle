@@ -7,6 +7,7 @@ PointMass::PointMass() {
     mVel << 0, 0, 0;
     mMass = 1;
     mImmobile = false;
+    mID = -1;
 }
 
 PointMass::PointMass(const PointMass& p) {
@@ -14,13 +15,15 @@ PointMass::PointMass(const PointMass& p) {
     mVel = p.mVel;
     mMass = p.mMass;
     mImmobile = p.mImmobile;
+    mID = p.mID;
 }
 
-PointMass::PointMass(float x, float y, float z) {
+PointMass::PointMass(float x, float y, float z, int i) {
     mPos << x, y, z;
     mVel << 0, 0, 0;
     mMass = 1;
     mImmobile = false;
+    mID = i;
 }
 
 void PointMass::simulate(float h) {

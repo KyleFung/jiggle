@@ -10,7 +10,10 @@ Simulation::Simulation() : width(500), height(500),
                            c(Eigen::Vector3f(0, 5, 50), 0, 0, width, height, 20),
                            closest(NULL), chosenDist(0), mode(0),
                            frozen(false), gravity(false), gForce(10) {
+    b[0].setName("Lower box");
+    b[1].setName("Upper box");
     b[0].translate(Eigen::Vector3f(0, 0, 0));
+    b[1].rotate(Eigen::Vector3f(0, 1, 1), 90);
     b[1].translate(Eigen::Vector3f(0, 5, 1));
 }
 
