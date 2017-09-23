@@ -88,22 +88,18 @@ Collision Edge::collide(Edge ed, float h) {
 
     // Calculate the (3) times that they will be coplanar
     // Compute the 4 coefficients of the cubic equation
-    Eigen::Vector3f a = e1.getPos(0) - e1.getPos(1);
-    Eigen::Vector3f b = e1.getVel(0) - e1.getVel(1);
-    Eigen::Vector3f c = e2.getPos(0) - e2.getPos(1);
-    Eigen::Vector3f d = e2.getVel(0) - e2.getVel(1);
-    Eigen::Vector3f e = e1.getPos(0) - e2.getPos(0);
-    Eigen::Vector3f f = e1.getVel(0) - e2.getVel(0);
+    Eigen::Vector3f x21 = e1.getPos(1) - e1.getPos(0);
+    Eigen::Vector3f x31 = e2.getPos(0) - e1.getPos(0);
+    Eigen::Vector3f x41 = e2.getPos(1) - e1.getPos(0);
 
-    Eigen::Vector3f bxc = b.cross(c);
-    Eigen::Vector3f bxd = b.cross(d);
-    Eigen::Vector3f axc = a.cross(c);
-    Eigen::Vector3f axd = a.cross(d);
+    Eigen::Vector3f v21 = e1.getVel(1) - e1.getVel(0);
+    Eigen::Vector3f v31 = e2.getVel(0) - e1.getVel(0);
+    Eigen::Vector3f v41 = e2.getVel(1) - e1.getVel(0);
 
-    float a0 = e.dot(axc);
-    float a1 = f.dot(axc) + e.dot(bxc + axd);
-    float a2 = e.dot(bxd) + f.dot(bxc + axd);
-    float a3 = f.dot(bxd);
+    float a3 = v21.cross(v31).dot(v41);
+    float a2 = v21.cross(v31).dot(x41) + (v21.cross(x31) + x21.cross(v31)).dot(v41);
+    float a1 = (v21.cross(x31) + x21.cross(v31)).dot(x41) + x21.cross(x31).dot(v41);
+    float a0 = x21.cross(x31).dot(x41);
 
     float smallest = smallestPosRealRoot(a0, a1, a2, a3);
 

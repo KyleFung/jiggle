@@ -54,7 +54,7 @@ void Simulation::simulate() {
                 Collision c = b[i].collide(b[j], h);
                 if(c.exists()) {
                     // Correct the intersection
-                    float eps = 0.05 * h;
+                    float eps = 0.07 * h;
                     float reverseStep = c.t - h - eps;
                     if(c.getType() == Collision::EDGEEDGE) {
                         b[i].getGeometry().getEdges().getItemFromBase(c.indexA).simulate(reverseStep);

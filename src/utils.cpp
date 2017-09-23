@@ -90,12 +90,12 @@ Eigen::Vector2f intersect(Eigen::Vector3f a, Eigen::Vector3f b, Eigen::Vector3f 
 
 float smallestPosRealRoot(float a0, float a1, float a2, float a3)
 {
-    float smallest = 10000;
+    float smallest = 10000.f;
 
     int degree = 3;
-    if(approx(a3, 0, 0.0001)) {
+    if(approx(a3, 0, 0.0001f)) {
         degree = 2;
-        if(approx(a2, 0, 0.0001)) {
+        if(approx(a2, 0, 0.0001f)) {
             degree = 1;
         }
     }
@@ -108,7 +108,7 @@ float smallestPosRealRoot(float a0, float a1, float a2, float a3)
         Eigen::Vector3cf roots = psolvef.roots();
         for(int i = 0; i < degree; i++) {
             // Check if the root is real
-            if(approx(roots[i].imag(), 0, 0.0001)) {
+            if(approx(roots[i].imag(), 0, 0.0001f)) {
                 // Check if it's in [0,h] and smaller than current min
                 float real = roots[i].real();
                 if(real >= 0 && real < smallest && !isnan(real)) {
@@ -143,7 +143,7 @@ float smallestPosRealRoot(float a0, float a1, float a2, float a3)
     }
 
     // If none fit that critera, then there is no collision
-    if(smallest == 10000) {
+    if(smallest == 10000.f) {
         return -1;
     }
 

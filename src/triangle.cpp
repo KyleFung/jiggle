@@ -79,6 +79,9 @@ bool Triangle::isCoplanar(PointMass p) {
     Eigen::Vector3f normal = (c - a).cross(b - a);
     Eigen::Vector3f someDir = d - a;
 
+    normal.normalize();
+    someDir.normalize();
+
     float coplanarness = normal.dot(someDir);
 
     return approx(coplanarness, 0, 0.0000001);
@@ -101,22 +104,18 @@ float Triangle::collide(PointMass p, float h) {
 
     // Calculate the (3) times that they will be coplanar
     // Compute the 4 coefficients of the cubic equation
-    Eigen::Vector3f a = t0.getPos(1) - t0.getPos(0);
-    Eigen::Vector3f b = t0.getVel(1) - t0.getVel(0);
-    Eigen::Vector3f c = t0.getPos(2) - t0.getPos(0);
-    Eigen::Vector3f d = t0.getVel(2) - t0.getVel(0);
-    Eigen::Vector3f e = p0.mPos - t0.getPos(0);
-    Eigen::Vector3f f = p0.mPos - t0.getVel(0);
+    Eigen::Vector3f x21 = t0.getPos(1) - t0.getPos(0);
+    Eigen::Vector3f x31 = t0.getPos(2) - t0.getPos(0);
+    Eigen::Vector3f x41 = p0.mPos - t0.getPos(0);
 
-    Eigen::Vector3f bxc = b.cross(c);
-    Eigen::Vector3f bxd = b.cross(d);
-    Eigen::Vector3f axc = a.cross(c);
-    Eigen::Vector3f axd = a.cross(d);
+    Eigen::Vector3f v21 = t0.getVel(1) - t0.getVel(0);
+    Eigen::Vector3f v31 = t0.getVel(2) - t0.getVel(0);
+    Eigen::Vector3f v41 = p0.mVel - t0.getVel(0);
 
-    float a0 = e.dot(axc);
-    float a1 = f.dot(axc) + e.dot(bxc + axd);
-    float a2 = e.dot(bxd) + f.dot(bxc + axd);
-    float a3 = f.dot(bxd);
+    float a3 = v21.cross(v31).dot(v41);
+    float a2 = v21.cross(v31).dot(x41) + (v21.cross(x31) + x21.cross(v31)).dot(v41);
+    float a1 = (v21.cross(x31) + x21.cross(v31)).dot(x41) + x21.cross(x31).dot(v41);
+    float a0 = x21.cross(x31).dot(x41);
 
     float smallest = smallestPosRealRoot(a0, a1, a2, a3);
 
@@ -128,9 +127,10 @@ float Triangle::collide(PointMass p, float h) {
     // check the barycentric coordinates
     t0.simulate(smallest);
     p0.simulate(smallest);
+
     Eigen::Vector3f coord = bary(t0.getPos(0), t0.getPos(1), t0.getPos(2), p0.mPos);
     for(int i = 0; i < 3; i++) {
-         if(coord[i] > 1 || coord[i] < 0 || isnan(coord[i])) {
+        if(coord[i] > 1 || coord[i] < 0 || isnan(coord[i])) {
             return -1;
         }
     }
