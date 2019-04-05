@@ -1,6 +1,7 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#include "collision.h"
 #include "interval.h"
 #include "pointmass.h"
 
@@ -16,7 +17,7 @@ class Triangle {
     Eigen::Vector3f getVel(int i);
     void draw();
     void simulate(float h);
-    float collide(PointMass p, float h);
+    Collision collide(PointMass p, float h);
 
     Eigen::Vector3f getFastest();
     Eigen::Vector3f getFurthest(Eigen::Vector3f center);

@@ -32,7 +32,11 @@ template <class T> class Interval {
     int getIndex(int i);
 
     // Should only ever get called from root interval
+#ifdef __APPLE__
+    T& getItemFromBase(int i);
+#else
     T& Interval<T>::getItemFromBase(int i);
+#endif
     void addItem(T item);
     void cleanUp();
 

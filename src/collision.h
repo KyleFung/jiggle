@@ -7,7 +7,7 @@ class Collision {
   public:
     enum ColType {EDGEEDGE, POINTFACE, FACEPOINT, NONE};
     Collision();
-    Collision(ColType c, int A, int B, float t, Eigen::Vector3f nor);
+    Collision(ColType c, int A, int B, float t, Eigen::Vector2f pos, Eigen::Vector3f nor);
     bool exists();
     ColType getType();
 
@@ -18,6 +18,7 @@ class Collision {
     int indexA;
     int indexB;
     float t;
+    Eigen::Vector2f pos;
     Eigen::Vector3f nor;
 
   private:

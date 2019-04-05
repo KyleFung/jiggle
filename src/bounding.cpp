@@ -172,9 +172,10 @@ Collision Bounding::collide(Bounding& b, float h) {
                 PointMass& p = b.getPoint(j);
                 int bi = getTriangleBaseIndex(i);
                 int bj = b.getPointBaseIndex(j);
-                float time = t.collide(p, h);
+                Collision c = t.collide(p, h);
+                float time = c.t;
                 if(time != -1 && (time < candidates[0].t || candidates[0].t == -1)) {
-                    candidates[0] = Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time, t.getNormal());
+                    candidates[0] = Collision(Collision::FACEPOINT, getTriangleBaseIndex(i), b.getPointBaseIndex(j), time, c.pos, t.getNormal());
                 }
             }
         }
@@ -188,9 +189,10 @@ Collision Bounding::collide(Bounding& b, float h) {
                 PointMass& p = getPoint(j);
                 int bj = getPointBaseIndex(j);
                 int bi = b.getTriangleBaseIndex(i);
-                float time = t.collide(p, h);
+                Collision c = t.collide(p, h);
+                float time = c.t;
                 if (time != -1 && (time < candidates[1].t || candidates[1].t == -1)) {
-                    candidates[1] = Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time, t.getNormal());
+                    candidates[1] = Collision(Collision::POINTFACE, getPointBaseIndex(j), b.getTriangleBaseIndex(i), time, c.pos, t.getNormal());
                 }
             }
         }
@@ -202,9 +204,10 @@ Collision Bounding::collide(Bounding& b, float h) {
             for(int j = 0; j < e1; j++) {
                 Edge& e1 = getEdge(i);
                 Edge& e2 = b.getEdge(j);
-                float time = e1.collide(e2, h).t;
+                Collision c = e1.collide(e2, h);
+                float time = c.t;
                 if (time != -1 && (time < candidates[2].t || candidates[2].t == -1)) {
-                    candidates[2] = Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time, e1.getNormal(e2));
+                    candidates[2] = Collision(Collision::EDGEEDGE, getEdgeBaseIndex(i), b.getEdgeBaseIndex(j), time, c.pos, e1.getNormal(e2));
                 }
             }
         }

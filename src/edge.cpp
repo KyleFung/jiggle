@@ -119,5 +119,5 @@ Collision Edge::collide(Edge ed, float h) {
         }
     }
 
-    return Collision(Collision::EDGEEDGE, -1, -1, smallest, Eigen::Vector3f());
+    return Collision(Collision::EDGEEDGE, -1, -1, smallest, coord, Eigen::Vector3f());
 }
