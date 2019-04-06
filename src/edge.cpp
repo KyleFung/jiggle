@@ -121,3 +121,7 @@ Collision Edge::collide(Edge ed, float h) {
 
     return Collision(Collision::EDGEEDGE, -1, -1, smallest, coord, Eigen::Vector3f());
 }
+
+PointMass Edge::interpolate(float t) {
+    return mP[0] * (1.0f - t) + mP[1] * t;
+}

@@ -17,6 +17,9 @@ class PointMass {
     void simulate(float h);
     float calculateDepth(float minDist, Eigen::Vector3f p, Eigen::Vector3f dir);
     void draw();
+
+    PointMass operator*(float t);
+    PointMass operator+(const PointMass& other);
 };
 
 #endif

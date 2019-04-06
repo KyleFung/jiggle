@@ -17,6 +17,7 @@ class Edge {
     void draw();
     void simulate(float h);
     Collision collide(Edge e, float h);
+    PointMass interpolate(float t);
 
     Eigen::Vector3f getFastest();
     Eigen::Vector3f getFurthest(Eigen::Vector3f center);

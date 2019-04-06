@@ -57,3 +57,25 @@ void PointMass::draw() {
     glutWireSphere(0.2, 10, 10);
     glTranslatef(-1 * mPos(0), -1 * mPos(1), -1 * mPos(2));
 }
+
+PointMass PointMass::operator*(float t) {
+    PointMass res;
+    res.mPos = mPos * t;
+    res.mVel = mVel * t;
+    res.mMass = mMass * t;
+    res.mImmobile = mImmobile;
+    res.mID = -1;
+
+    return res;
+}
+
+PointMass PointMass::operator+(const PointMass& other) {
+    PointMass res;
+    res.mPos = mPos + other.mPos;
+    res.mVel = mVel + other.mVel;
+    res.mMass = mMass + other.mMass;
+    res.mImmobile = mImmobile && other.mImmobile;
+    res.mID = -1;
+
+    return res;
+}
