@@ -25,7 +25,6 @@ void Simulation::start() {
     glViewport(0, 0, 500, 500);
     glMatrixMode(GL_MODELVIEW);
 
-    warpMouse(width / 2, height / 2);
     glutMainLoop();
 }
 
@@ -119,7 +118,7 @@ void Simulation::keyHandler(unsigned char key, int x, int y) {
     // Toggle picking mode
     if(key == 'e') {
         mode = (mode + 1) % 2;
-        warpMouse(width / 2, height / 2);
+        c.mStarted = false;
     }
     // Apply gravity
     if(key == 'g') {
@@ -142,8 +141,7 @@ void Simulation::keyHandler(unsigned char key, int x, int y) {
 void Simulation::mousePassiveHandler(int x, int y) {
     // Only move around camera if not in picking mode
     if(mode == 0) {
-        c.onMouse(x, y);
-        warpMouse(width / 2, height / 2);
+        c.updateMouse(x, y);
     }
 }
 
@@ -151,7 +149,6 @@ void Simulation::mousePressedHandler(int x, int y) {
     // Move camera around if not in picking mode
     if(mode == 0) {
         c.onMouse(x, y);
-        warpMouse(width / 2, height / 2);
     }
     // Drag chosen object if in picking mode
     if(mode == 1 && chosen) {
@@ -188,18 +185,6 @@ void Simulation::mouseButtonHandler(int button, int state, int x, int y) {
             closest = NULL;
         }
     }
-}
-
-void Simulation::warpMouse(int x, int y) {
-#ifdef _WIN32
-    // Windows GLUT seems to trigger another mouse move when we warp
-    static int count = 0;
-    count = (count + 1) % 2;
-    if (count > 0) {
-        return;
-    }
-#endif
-    glutWarpPointer(width / 2, height / 2);
 }
 
 PointMass* Simulation::getClosestPoint(float tol, Eigen::Vector3f pos, Eigen::Vector3f ray) {

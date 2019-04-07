@@ -8,7 +8,7 @@
 Camera::Camera(Eigen::Vector3f pos, float pitch, float yaw,
                int windowWidth, int windowHeight, float fovy) :
     mPos(pos), mPitch(pitch), mYaw(yaw), mFovy(fovy), mStepSize(0.5f),
-    mWinWidth(windowWidth), mWinHeight(windowHeight) {}
+    mWinWidth(windowWidth), mWinHeight(windowHeight), mStarted(false) {}
 
 bool Camera::onKey(int key)
 {
@@ -47,19 +47,33 @@ bool Camera::onKey(int key)
     return ret;
 }
 
+bool Camera::updateMouse(int x, int y) {
+        mMouseX = x;
+        mMouseY = y;
+}
+
 bool Camera::onMouse(int x, int y)
 {
+    if (!mStarted) {
+        mStarted = true;
+        mMouseX = x;
+        mMouseY = y;
+        return true;
+    }
+
     //Increment the yaw of the camera
-    int deltaX = x - mWinWidth / 2;
-    mYaw += deltaX * 0.02f;
+    int deltaX = x - mMouseX;
+    mYaw += deltaX * 0.05f;
     mYaw = fmod(mYaw, 360.0f);
 
     //Increment the pitch of the camera
     //Note that window y coordinates increase downwards
-    int deltaY = mWinHeight / 2 - y;
-    mPitch += deltaY * 0.02f;
+    int deltaY = mMouseY - y;
+    mPitch += deltaY * 0.05f;
     mPitch = clamp(mPitch, -90.0f, 90.0f);
 
+    mMouseX = x;
+    mMouseY = y;
     return true;
 }
 
