@@ -37,7 +37,7 @@ Release/
 .vs/
 
 # Debug
-jiggle.out.*
+jiggle
 
 # Swap files
 *.swp
